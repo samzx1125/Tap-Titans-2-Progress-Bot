@@ -27,9 +27,24 @@ var #randomY 0
 		goto :start
 	endif
 	
+	//prevent hero story window
+ 	if #randomY > 184 and #randomY < 233 and #randomX > 403
+ 		goto :randomTouch
+ 	endif
+	
 	touchDown 0 #randomX #randomY
 	touchUp 0
-		
+	
+	touchDown 0 350 630
+	touchUp 0
+	
+	touchDown 0 65 100
+	touchUp 0
+	touchDown 0 65 100
+	touchUp 0
+	touchDown 0 65 100
+	touchUp 0
+	
 	sleep #delay
 	
 goto :start
