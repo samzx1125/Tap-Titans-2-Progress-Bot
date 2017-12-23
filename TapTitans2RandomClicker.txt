@@ -1,15 +1,24 @@
 // -  Tap Titans 2 RandomClicker by Tune389 [ v1 ]
+//edited by djo5296 '17-12-23
 
 SCREEN_SIZE: 480x800
 
 var #delay 30
-var #equipmentStacking 1
 
 var #startX 60
 var #endX 415
-
-var #startY 270
 var #endY 420
+var #count 0
+
+// ----------- Settings
+var #startY 160
+// use 160 if w/ faries, 270 w/o
+
+var #CO 0
+var #boss 0
+var #equipmentStacking 0
+var #agree 0
+var #decline 0
 
 // ----------- Dec
 
@@ -18,7 +27,15 @@ var #randomY 0
 
 // ----------- RANDOM ATTACK
 :start
-
+	if #boss == 1
+		getColor #color 390 36
+		if #color == 1204718
+			touchPress 0 390 36
+				touchPress 0 360 710
+					touchPress 0 120 710
+		endif
+	endif
+	
 	rand #randomX #startX #endX
 	rand #randomY #startY #endY
 	
@@ -35,18 +52,43 @@ var #randomY 0
 	touchDown 0 #randomX #randomY
 	touchUp 0
 	
-	touchDown 0 350 630
-	touchUp 0
-	
-	touchDown 0 65 100
-	touchUp 0
-	touchDown 0 65 100
-	touchUp 0
-	touchDown 0 65 100
-	touchUp 0
+	if #CO == 1
+		touchDown 0 65 100
+		touchUp 0
+		touchDown 0 65 100
+		touchUp 0
+		touchDown 0 65 100
+		touchUp 0
+	endif
 	
 	sleep #delay
 	
+	#count = #count + 1
+	
+	if #count == 10
+		#count = 0
+		if #agree == 1
+			goto :agree
+		endif
+		if #decline == 1
+			goto :decline
+		endif
+	endif
+	
 goto :start
 
+:agree
+		
+	touchDown 0 300 630
+	touchUp 0
+	
+goto :start
+
+:decline
+		
+	touchDown 0 200 630
+	touchUp 0
+	
+goto :start
+		
 :end
