@@ -1,4 +1,4 @@
-// -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev djo5296 '17-11-30 ]
+// -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev djo5296 '17-12-23]
 
 SCREEN_SIZE: 480x800
 
@@ -6,10 +6,10 @@ SCREEN_SIZE: 480x800
 
 var #enableFairies 1
 //; 1 = (default) collect all fairies
-//; 0 = no more ad pop ups will apear
+//; 0 = no more ad pop ups will appear
 
 var #enablePremiumCollect 1
-//; 1 = collect all premium popups
+//; 1 = collect all premium pop-ups
 //; 0 = (default)
 
 var #hatchEggs 1
@@ -18,24 +18,26 @@ var #hatchEggs 1
 var #enableClanShip 0
 
 var #enableTapping 1
-//; 1 = (default) hit the titans with your sm
-//; 0 = disable hits (execept on cq), no fairies will clicked at all
+//; 1 = (default) hit the titans with your sword master
+//; 0 = disable hits (except on CQ), no fairies will clicked at all
 
 var #equipStack 1
 var #agree 0
-var #decline 1
+var #decline 0
 var #lateTournament 0
 
 var #minz 0
 #minz = 60000 * 125
+//edit the 125
+// timeLateAdd 1 to start at #minutes = #minz / 60000
 var #timeLateAdd 0
 #timeLateAdd = #minz
 
 // ----------- Actions ----------- [ Prestige ]
 var #enableAutoprestige 1
 var #prestigeAfterXMinutes 0
-var #prestigeStartTime 74
-var #prestigeEndTime 80
+var #prestigeStartTime 65
+var #prestigeEndTime 77
 
 rand #prestigeAfterXMinutes #prestigeStartTime #prestigeEndTime
 
@@ -75,14 +77,9 @@ var #clanQuestRunsPerReadyUp 1
 var #enableHeroes 1
 
 //clicks on level up per run
-var #skillIntensity 3
+var #skillIntensity 4
 //; 1 = (default)
 //; 2-99 = Multiple level ups
-
-var #maxOutHero 2
-//; 1 = Damon (Mage)
-//; 2 = Finn (Ranged)
-//; 3 = Nohni (Melee)
 
 // ----------- Actions ----------- [ Skills ]
 var #enableSkills 1
@@ -91,7 +88,7 @@ var #enableSkills 1
 var #stopMasterAfterSkillsUnlocked 1
 
 //press given skills every X seconds
-var #intervalHeavenlyStrike 15
+var #intervalHeavenlyStrike 10
 var #intervalCrit 0
 var #intervalFireBlade 0
 var #intervalMidas 0
@@ -172,6 +169,7 @@ var #recheckClanQuest 0
 var #count 0
 var #hitCount 0
 var #skillAvailable 0
+var #loopBreak 0
 
 // ----------- Delays
 var #btnDelay 150
@@ -193,6 +191,8 @@ var #colorSkillActivated -20993
 var #colorInfoNumber 475629
 var #colorDia -7970303
 var #colorLevelUpAvailable 1338350
+var #skillGray 7829367
+var #skillBlue 3693762
 var #colorBlack 397861
 var #colorStatsButton 3826675
 var #colorGray 2695200
@@ -246,28 +246,33 @@ var #resultClanQuest 0
 		
 		if #enableSkills == 1
 			if #secondsTotal > 301
-				#intervalHeavenlyStrike = 180
+				#intervalHeavenlyStrike = 100
 				#intervalShadowClone = 0
 			endif
 			if #minutes > 25
 				#fullManaSkill = 1
 				#intervalHeavenlyStrike = 300
 			endif
-			if #minutes > 30
-				#fullManaSkill = 5
-				#intervalHeroes = 375
-			endif
-			if #minutes > 35
+			if #minutes > 45
 				#intervalHeavenlyStrike = 0
+				#intervalHeroes = 375
+				#fullManaSkill = 5
 			endif				
 			if #minutes > 50
 				#intervalHeroes = 400
 			endif
 			if #minutes > 60
-				#intervalCrit = 800
+				#intervalCrit = 0
 				#intervalFireBlade = 0
-				#intervalMidas = 0
-				#intervalHeroes = 800
+				#intervalMidas = 700
+				#intervalHeroes = 700
+				#intervalShadowClone = 0
+			endif
+			if #minutes > 65
+				#intervalCrit = 0
+				#intervalFireBlade = 0
+				#intervalMidas = 240
+				#intervalHeroes = 120
 				#intervalShadowClone = 0
 			endif
 			if #minutes > 75
@@ -323,7 +328,6 @@ var #resultClanQuest 0
 		goto :checkMana
 	elseif #loopCount == #maxHitCount
 		#loopCount = 0
-		goto :checkMana
 		goto :randomTouch
 	else
 		goto :randomTouch
@@ -339,7 +343,7 @@ var #resultClanQuest 0
 	#minutes = 0
 	#count = 0
 	
-	#intervalHeavenlyStrike = 15
+	#intervalHeavenlyStrike = 10
 	#intervalCrit = 0
 	#intervalFireBlade = 0
 	#intervalMidas = 0
@@ -476,7 +480,7 @@ goto :start
 
 // ----------- CHECK MANA
 :checkMana
-	//checking Manabar
+	//checking mana bar
 	getColor #color1 208 638
 	if #color1 == #colorWhite
 		//Mana full starting something and dont waste regen time
@@ -518,7 +522,7 @@ goto :start
 	
 	if #checkBossFight == 1 and #color1 == #colorWhite
 		touchPress 0 #menuCloseX #menuCloseY
-		toast skipping actions - bossfight in progress
+		toast skipping actions - boss fight in progress
 		goto :pressSkills
 	endif
 
@@ -603,6 +607,36 @@ goto :runActions
 
 	sleep 400
 
+	//slide down
+	touchDown 1 280 740
+	sleep 200
+	touchMove 1 280 710
+	sleep 50
+	touchMove 1 280 500
+	sleep 50
+	touchMove 1 280 410
+	sleep 50
+	touchMove 1 280 400
+	touchUp 1
+
+	sleep 300
+	#time = #time + 650
+	
+	//slide down
+	touchDown 1 280 740
+	sleep 200
+	touchMove 1 280 710
+	sleep 50
+	touchMove 1 280 500
+	sleep 50
+	touchMove 1 280 410
+	sleep 50
+	touchMove 1 280 400
+	touchUp 1
+
+	sleep 300
+	#time = #time + 650
+	
 	//slide down
 	touchDown 1 280 740
 	sleep 200
@@ -805,16 +839,17 @@ goto :clanQuestClose
 goto :checkSkillsFinish
 
 :maxSkill
-	getColor #skillAvailable 460 745
-	if #skillAvailable == #colorLevelUpAvailable
-		touchPress 0 466 730
-		sleep 40
-		#time = #time + 50
-	endif
-	
-	getColor #skillAvailable 460 745
-	if #skillAvailable == #colorLevelUpAvailable
-		goto :maxSkill
+	getColor #skillAvailable 460 730
+	if #skillAvailable < -1000000
+		sleep 10
+	else
+		touchPress 0 460 730
+		sleep 50
+		touchPress 0 460 730
+		sleep 50
+		touchPress 0 460 730
+		
+		#time = #time + 150
 	endif
 	
 	if #skillCheckStepper == 6
@@ -825,25 +860,15 @@ goto :checkSkillsFinish
 	
 :maxHS
 	// first skill; heavenly strike
-	getColor #skillAvailable 460 670
-	if #skillAvailable == #colorLevelUpAvailable
-		touchPress 0 466 670
+	getColor #skillAvailable 460 700
+	if #skillAvailable > -7963574 and #skillAvailable < -7034609
+		goto :checkSkills
+	else
+		touchPress 0 466 700
 		sleep 40
 		#time = #time + 50
-			//sleep #btnDelay
-			//#time = #time + #btnDelay
-			//touchDown 0 466 670
-			//sleep #btnDelay
-			//#time = #time + #btnDelay
-			//touchUp 0
-	endif
-	
-	getColor #skillAvailable 460 670
-	if #skillAvailable == #colorLevelUpAvailable
 		goto :maxHS
 	endif
-	
-	goto :checkSkills
 
 :checkSkillsUnlock
 	
@@ -866,21 +891,21 @@ goto :checkSkillsFinish
 	endif
 	
 	if #justUnlockSkills == 0
-		//touchPress 0 466 730
-		//sleep 50
-		//#time = #time + 50
+	
+		getColor #skillAvailable 466 730
+		if #skillAvailable == #skillBlue
+			goto :checkSkillsSlideDown
+		else
+			touchPress 0 466 745
+			sleep 40
+			#time = #time + 50
+		endif
 		
 		getColor #skillAvailable 466 730
-		if #skillAvailable == 
-		
-		goto :maxSkill
-		//touchPress 0 466 730
-		//sleep 50
-		//touchPress 0 466 730
-		//sleep 50
-		//touchPress 0 466 730
-		//sleep 50
-		//#time = #time + 750
+		if #skillAvailable == #skillBlue
+		else
+			goto :maxSkill
+		endif
 	endif
 	
 	if #skillCheckStepper == 6
@@ -1054,34 +1079,71 @@ toast Count is equal to #count
 		#loopDetectionCount = 0
 		#time = #time + 2000
 		
-		//force 1 down scroll
-		touchDown 1 280 750
-		touchMove 1 280 745
-		sleep 100
-		touchMove 1 280 740
-		touchMove 1 280 735
-		sleep 50
-		touchMove 1 280 700
-		touchMove 1 280 690
-		sleep 50
-		touchMove 1 280 500
-		touchMove 1 280 450
-		sleep 20
-		touchMove 1 280 420
-		touchMove 1 280 410
-		sleep 50
-		touchMove 1 280 400
-		touchUp 1
-		sleep 200
-		
-		#time = #time + 470
-		
-		goto :levelHeroesScrollDown
+		goto :scrollTop
 	endif
 	
 	#tryWithDelay = 1
 	
 goto :levelHeroes
+
+:scrollTop
+
+	#loopDetectionCount = #loopDetectionCount + 1
+	if #loopDetectionCount == 50
+		goto :loopDetected
+	endif
+
+	getColor #color1 475 510
+	if #color1 == #colorGray
+		goto :maxTopHero
+	endif
+
+	touchDown 0 280 650
+	sleep 200
+	touchMove 0 280 600
+	sleep 50
+	touchMove 0 280 700
+	sleep 50
+	touchMove 0 280 750
+	sleep 50
+	touchMove 0 280 780
+	touchUp 0
+	sleep 200
+	
+	touchDown 0 280 650
+	sleep 200
+	touchMove 0 280 600
+	sleep 50
+	touchMove 0 280 700
+	sleep 50
+	touchMove 0 280 750
+	sleep 50
+	touchMove 0 280 780
+	touchUp 0
+	sleep 200
+	#time = #time + 1100
+	
+goto :scrollTop
+
+:maxTopHero
+	
+	#loopBreak = #loopBreak + 1
+	
+	if #loopBreak > 60
+		#loopBreak = 0
+		goto :levelHeroesScrollDown
+	endif
+	
+	getColor #skillAvailable 460 670
+	if #skillAvailable > -7963574 and #skillAvailable < -7034609
+		#loopBreak = 0
+		goto :levelHeroesScrollDown
+	else
+		touchPress 0 460 670
+		sleep 40
+		#time = #time + 50
+		goto :maxTopHero
+	endif
 
 :levelHeroesScrollDown
 	#loopDetectionCount = #loopDetectionCount + 1
@@ -1092,7 +1154,7 @@ goto :levelHeroes
 	getColor #color1 440 760
 	if #color1 == #colorGray
 		#loopDetectionCount = 0
-		goto :levelHeroesMaxOutMain
+		goto :maxBottomHero
 	endif
 
 	touchDown 1 280 750
@@ -1118,136 +1180,38 @@ goto :levelHeroes
 	
 	goto :levelHeroesScrollDown
 
-:levelHeroesMaxOutMain
-//; 2 = Finn (Ranged)
-	if #maxOutHero == 2
-		touchDown 1 466 570
+:maxBottomHero
+//; 1 = Finn (Ranged) 466 570
+//; 2 = Nohni (Melee) 466 645
+//; 3 = Damon (Mage) 466 720
+	
+	#loopBreak = #loopBreak + 1
+
+	if #loopBreak > 60
+		#loopBreak = 0
+		goto :levelHeroesPressLevelUp
+	endif
+
+	getColor #skillAvailable 466 720
+	if #skillAvailable > -7963574 and #skillAvailable < -7034609
+		#loopBreak = 0
+		goto :levelHeroesPressLevelUp
+	else
+		touchPress 0 466 720
 		sleep 40
-		touchUp 1
-		sleep 250
-		touchDown 1 466 570
-		sleep 40
-		touchUp 1
-		sleep 250
-		touchDown 1 466 570
-		sleep 40
-		touchUp 1
-		sleep 250
-		touchDown 1 466 570
-		sleep 40
-		touchUp 1
-		sleep 250
-		touchDown 1 466 570
-		sleep 40
-		touchUp 1
-		sleep 250
-		touchDown 1 466 570
-		sleep 40
-		touchUp 1
-		sleep 250
-		touchDown 1 466 570
-		sleep 40
-		touchUp 1
-		sleep 250
-		touchDown 1 466 570
-		sleep 40
-		touchUp 1
-		sleep 250
-		#time = #time + 2720
-		
-//; 3 = Nohni (Melee)
-	elseif #maxOutHero == 3
-		touchDown 1 466 645
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 645
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 645
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 645
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 645
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 645
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 645
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 645
-		sleep 40
-		touchUp 1
-		sleep 300
-		#time = #time + 2720
-//; 1 = Damon (Mage)
-	elseif #maxOutHero == 1
-		touchDown 1 466 720
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 720
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 720
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 720
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 720
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 720
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 720
-		sleep 40
-		touchUp 1
-		sleep 300
-		touchDown 1 466 720
-		sleep 40
-		touchUp 1
-		sleep 300
-		#time = #time + 2720
+		#time = #time + 50
+		goto :maxBottomHero
 	endif
 	
 	#seconds = (#time/1000)%60
 	#secondsTotal = #time/1000
 	#minutes = (#time/1000)/60
+	#lastPressHeroes = #secondsTotal
+	#lastPressMidas = #secondsTotal
+	#lastPressCrit = #secondsTotal
 	
-	toast Time now is #minutes:#seconds
+goto :levelHeroesPressLevelUp
 	
-	if #lateTournament == 0
-		if #minutes > 63
-			goto :closeMenu
-		else
-			goto :levelHeroesPressLevelUp
-		endif
-	else
-		if #minutes > 120
-			goto :closeMenu
-		elseif #minutes > 95
-			goto :levelHeroesPressLevelUp
-		else
-			goto :closeMenu
-		endif
-	endif	
 	
 :levelHeroesSlideUpCollection
 
