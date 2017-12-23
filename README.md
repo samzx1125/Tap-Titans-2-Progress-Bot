@@ -26,9 +26,12 @@ A HiroMacro script for Tap Titans game
  - dynamic changing of intervalSkill based on time elapsed (change according to preference)
    
 ## Changes from last code
- REMOVED -stop leveling up non-main heroes after X minutes
+ REMOVED
+ -stop leveling up non-main heroes after X minutes
   >because heroes now have a lvl 6k cap, it doesn't matter if you keep leveling old heroes because you need to get all passive skills, also for future ascension
- CHANGED - startBossSkill: 0|2|3|4|5|6 (If the boss fight fails, the bot will wait for this skill before the next boss start)
+
+ CHANGED
+ - startBossSkill: 0|2|3|4|5|6 (If the boss fight fails, the bot will wait for this skill before the next boss start)
  - startBossSecondarySkill: 0|2|3|4|5|6 (The bot press this skill on boss fight start, but without an readyup check)
   >reworked into always click "FIGHT BOSS" whenever it appears
   >also clicks on skill Heroes, and later on Midas and DS as well
