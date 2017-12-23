@@ -1,5 +1,5 @@
 // -  Tap Titans 2 RandomClicker by Tune389 [ v1 ]
-//edited by djo5296 '17-12-23
+//edited by djo5296 '17-12-23 v2
 
 SCREEN_SIZE: 480x800
 
@@ -15,10 +15,14 @@ var #startY 160
 // use 160 if w/ faries, 270 w/o
 
 var #CO 0
-var #boss 0
-var #equipmentStacking 0
+var #bossAvailable 0
+var #equipmentStacking 1
 var #agree 0
 var #decline 0
+// agree = 1 if you can skip ads to auto accept fairy ads; aka fairy ads skippable
+// decline = 1 if you cannot turn off fairy ads but want to click on all fairies
+// you can leave both at 0 if you turn off fairy ads
+// do not use make both = 1 hahaha
 
 // ----------- Dec
 
@@ -27,12 +31,13 @@ var #randomY 0
 
 // ----------- RANDOM ATTACK
 :start
-	if #boss == 1
+	if #bossAvailable == 1
 		getColor #color 390 36
 		if #color == 1204718
 			touchPress 0 390 36
-				touchPress 0 360 710
-					touchPress 0 120 710
+			touchPress 0 360 710
+			touchPress 0 120 710
+			//activates Heroes, Midas, DS in that order
 		endif
 	endif
 	
