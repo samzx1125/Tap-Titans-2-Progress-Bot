@@ -1,16 +1,21 @@
-// -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev djo5296 '17-12-23]
+// -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1]
+// edited by djo5296 '17-12-23 v2
 
 SCREEN_SIZE: 480x800
-
-// ----------- Settings
+// ----------- do not touch
+var #minz 0
+var #timeLateAdd 0
+// ----------- Click Areas
 
 var #enableFairies 1
-//; 1 = (default) collect all fairies
+//; 1 = collect all fairies
 //; 0 = no more ad pop ups will appear
+//; more settings below to auto-cancel/accept fairy ads
 
 var #enablePremiumCollect 1
 //; 1 = collect all premium pop-ups
-//; 0 = (default)
+//; 0 = do not collect
+//; more settings below to auto-cancel/accept fairy ads
 
 var #hatchEggs 1
 //; 1 = (default) collect eggs
@@ -22,20 +27,31 @@ var #enableTapping 1
 //; 0 = disable hits (except on CQ), no fairies will clicked at all
 
 var #equipStack 1
+// 1 = keep clan crates and equips on the floor
+
 var #agree 0
 var #decline 0
-var #lateTournament 0
-
-var #minz 0
-#minz = 60000 * 125
-//edit the 125
-// timeLateAdd 1 to start at #minutes = #minz / 60000
-var #timeLateAdd 0
-#timeLateAdd = #minz
+// agree = 1 if you can skip ads to auto accept fairy ads; aka fairy ads skippable
+// decline = 1 if you cannot turn off fairy ads but want to click on all fairies
+// you can leave both at 0 if you turn off fairy ads
+// do not use make both = 1 hahaha
 
 // ----------- Actions ----------- [ Prestige ]
+
 var #enableAutoprestige 1
+//1 for on, 0 for don't prestige
+
+var #lateTournament 0
+// use 1 if you want to start at later time define below in #minz
+
+#minz = 60000 * 125
+// starts at 125 mins; else, edit the 125 above
+// "lateTournament 1" to start at #minutes = #minz / 60000
+#timeLateAdd = #minz
+
 var #prestigeAfterXMinutes 0
+//leave as 0, what matters are the start and end times below
+
 var #prestigeStartTime 65
 var #prestigeEndTime 77
 
@@ -225,10 +241,10 @@ var #resultClanQuest 0
 :start
 	#loopCount = #loopCount + 1
 
-	#resultManaPool = #loopCount % 151
+	#resultManaPool = #loopCount % 51
 	#resultCheckBoss = #loopCount % 302
 	#resultClanQuest = #loopCount % 101
-	#resultUpdateTime = #loopCount % 80
+	#resultUpdateTime = #loopCount % 40
 
 	#timeDiff = #minutes - #timeLastActionRun
 	
@@ -245,48 +261,49 @@ var #resultClanQuest 0
 		#minutes = (#time/1000)/60
 		
 		if #enableSkills == 1
-			if #secondsTotal > 301
-				#intervalHeavenlyStrike = 100
-				#intervalShadowClone = 0
-			endif
-			if #minutes > 25
-				#fullManaSkill = 1
-				#intervalHeavenlyStrike = 300
-			endif
-			if #minutes > 45
-				#intervalHeavenlyStrike = 0
-				#intervalHeroes = 375
-				#fullManaSkill = 5
-			endif				
-			if #minutes > 50
-				#intervalHeroes = 400
-			endif
-			if #minutes > 60
-				#intervalCrit = 0
-				#intervalFireBlade = 0
-				#intervalMidas = 700
-				#intervalHeroes = 700
-				#intervalShadowClone = 0
-			endif
-			if #minutes > 65
-				#intervalCrit = 0
-				#intervalFireBlade = 0
-				#intervalMidas = 240
-				#intervalHeroes = 120
-				#intervalShadowClone = 0
-			endif
-			if #minutes > 75
+			if #minutes > 120
+				#intervalCrit = 1000
+				#intervalMidas = 1000
+				#intervalHeroes = 1000
+				
+			elseif #minutes > 75
 				#intervalCrit = 850
 				#intervalFireBlade = 0
 				#intervalMidas = 850
 				#intervalHeroes = 850
 				#intervalShadowClone = 0
-			endif
-			if #minutes > 120
-				#intervalCrit = 1000
-				#intervalMidas = 1000
-				#intervalHeroes = 1000
-			endif
+				
+			elseif #minutes > 65
+				#intervalCrit = 0
+				#intervalFireBlade = 0
+				#intervalMidas = 240
+				#intervalHeroes = 120
+				#intervalShadowClone = 0
+				
+			elseif #minutes > 60
+				#intervalCrit = 0
+				#intervalFireBlade = 0
+				#intervalMidas = 700
+				#intervalHeroes = 700
+				#intervalShadowClone = 0
+				
+			elseif #minutes > 50
+				#intervalHeroes = 400
+				
+			elseif #minutes > 45
+				#intervalHeavenlyStrike = 0
+				#intervalHeroes = 375
+				#fullManaSkill = 5
+				
+			elseif #minutes > 40
+				#intervalHeavenlyStrike = 300
+				
+			elseif #minutes > 25
+				#intervalHeavenlyStrike = 150
+				
+			elseif #secondsTotal > 301
+				#intervalHeavenlyStrike = 100
+				#intervalShadowClone = 0
 		endif
 	endif
 	
@@ -335,7 +352,10 @@ var #resultClanQuest 0
 :end
 
 :afterPrestige
-	#prestige = #prestige + 1
+
+	if #prestige = 0
+		#prestige = 1
+	endif
 	#skillsUnlocked = 0
 	#time = 0
 	#seconds = 0
@@ -349,6 +369,8 @@ var #resultClanQuest 0
 	#intervalMidas = 0
 	#intervalHeroes = 0
 	#intervalShadowClone = 120
+	
+	#fullManaSkill = 1
 	
 	rand #prestigeAfterXMinutes #prestigeStartTime #prestigeEndTime
 goto :init
@@ -501,7 +523,9 @@ goto :start
 		touchPress 0 360 710
 		if #minutes > 125
 			touchPress 0 120 710
+			//activate DS
 			touchPress 0 200 710
+			//activate Midas
 			#lastPressHeroes = #secondsTotal + 120
 			#lastPressMidas = #secondsTotal + 120
 			#lastPressCrit = #secondsTotal + 120
@@ -951,7 +975,6 @@ goto :runActions
 // ----------- LEVEL HEROES
 :levelHeroes
 
-toast Count is equal to #count
 //-----
 	if #count == 0
 
@@ -988,6 +1011,36 @@ toast Count is equal to #count
 		touchUp 0
 		sleep 750
 		#time = #time + 1100
+		
+		if #count == 0
+			//slide top
+			touchDown 0 280 650
+			sleep 200
+			touchMove 0 280 600
+			sleep 50
+			touchMove 0 280 700
+			sleep 50
+			touchMove 0 280 750
+			sleep 50
+			touchMove 0 280 780
+			touchUp 0
+			sleep 750
+			#time = #time + 1100
+		
+			//slide top
+			touchDown 0 280 650
+			sleep 200
+			touchMove 0 280 600
+			sleep 50
+			touchMove 0 280 700
+			sleep 50
+			touchMove 0 280 750
+			sleep 50
+			touchMove 0 280 780
+			touchUp 0
+			sleep 750
+			#time = #time + 1100
+		endif
 		
 		//lvl up
 		sleep #btnDelay
@@ -1140,8 +1193,8 @@ goto :scrollTop
 		goto :levelHeroesScrollDown
 	else
 		touchPress 0 460 670
-		sleep 40
-		#time = #time + 50
+		sleep 50
+		#time = #time + 55
 		goto :maxTopHero
 	endif
 
@@ -1181,6 +1234,7 @@ goto :scrollTop
 	goto :levelHeroesScrollDown
 
 :maxBottomHero
+//; for legacy coordinates:
 //; 1 = Finn (Ranged) 466 570
 //; 2 = Nohni (Melee) 466 645
 //; 3 = Damon (Mage) 466 720
@@ -1206,9 +1260,12 @@ goto :scrollTop
 	#seconds = (#time/1000)%60
 	#secondsTotal = #time/1000
 	#minutes = (#time/1000)/60
-	#lastPressHeroes = #secondsTotal
-	#lastPressMidas = #secondsTotal
-	#lastPressCrit = #secondsTotal
+	
+	if #lateTournament == 1
+		#lastPressHeroes = #secondsTotal
+		#lastPressMidas = #secondsTotal
+		#lastPressCrit = #secondsTotal
+	endif
 	
 goto :levelHeroesPressLevelUp
 	
@@ -1331,14 +1388,10 @@ goto :levelUpLoop
 
 
 :levelUpLoop
-	//lvl up
+	//lvl up sword master
 	sleep #btnDelay
 	#time = #time + #btnDelay
-	//touchDown 0 466 580
-	//touchUp 0
-	//getColor #color1 460 600
-	//if #color1 == #colorLevelUpAvailable
-	//	goto :levelUpLoop
+	//sword master level up now moved to start of level up process before heroes
 	if #enableSkills == 1 or #enableHeroes == 1
 		goto :runActions
 	endif
@@ -1510,13 +1563,13 @@ goto :pressSkills
 		touchUp 0
 	endif
 	
-	if #hitCount == 7 and #agree == 1
+	if #hitCount == 10 and #agree == 1
 		#hitCount = 0
 		touchDown 0 300 630
 		touchUp 0
 	endif
 	
-	if #hitCount == 7 and #decline == 1
+	if #hitCount == 10 and #decline == 1
 		#hitCount = 0
 		touchDown 0 200 630
 		touchUp 0
@@ -1525,4 +1578,5 @@ goto :pressSkills
 	//sleep #hitDelay
 	#time = #time + #hitDelay
 	#hitCount = #hitCount + 1
+	
 goto :start
