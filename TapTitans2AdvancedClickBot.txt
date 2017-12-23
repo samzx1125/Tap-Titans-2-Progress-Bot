@@ -5,6 +5,7 @@ SCREEN_SIZE: 480x800
 // ----------- do not touch
 var #minz 0
 var #timeLateAdd 0
+var #stopMasterAfterSkillsUnlocked 1
 // ----------- Click Areas
 
 var #enableFairies 1
@@ -93,18 +94,15 @@ var #clanQuestRunsPerReadyUp 1
 var #enableHeroes 1
 
 //clicks on level up per run
-var #skillIntensity 4
+var #heroIntensity 4
 //; 1 = (default)
 //; 2-99 = Multiple level ups
 
 // ----------- Actions ----------- [ Skills ]
 var #enableSkills 1
 
-//prevent sword master leveling after all skills are unlocked ( > lvl 600)
-var #stopMasterAfterSkillsUnlocked 1
-
 //press given skills every X seconds
-var #intervalHeavenlyStrike 10
+var #intervalHS 10
 var #intervalCrit 0
 var #intervalFireBlade 0
 var #intervalMidas 0
@@ -112,7 +110,7 @@ var #intervalHeroes 0
 var #intervalShadowClone 120
 
 if #lateTournament == 1
-	#intervalHeavenlyStrike = 0
+	#intervalHS = 0
 	#intervalCrit = 0
 	#intervalFireBlade = 0
 	#intervalMidas = 0
@@ -291,18 +289,18 @@ var #resultClanQuest 0
 				#intervalHeroes = 400
 				
 			elseif #minutes > 45
-				#intervalHeavenlyStrike = 0
+				#intervalHS = 0
 				#intervalHeroes = 375
 				#fullManaSkill = 5
 				
 			elseif #minutes > 40
-				#intervalHeavenlyStrike = 300
+				#intervalHS = 300
 				
 			elseif #minutes > 25
-				#intervalHeavenlyStrike = 150
+				#intervalHS = 150
 				
 			elseif #secondsTotal > 301
-				#intervalHeavenlyStrike = 100
+				#intervalHS = 100
 				#intervalShadowClone = 0
 		endif
 	endif
@@ -363,7 +361,7 @@ var #resultClanQuest 0
 	#minutes = 0
 	#count = 0
 	
-	#intervalHeavenlyStrike = 10
+	#intervalHS = 10
 	#intervalCrit = 0
 	#intervalFireBlade = 0
 	#intervalMidas = 0
@@ -493,7 +491,7 @@ goto :init
 		#time = #time + 200
 	endif
 	#timeDiff = #secondsTotal - #lastPressHeavenlyStrike
-	if #timeDiff >= #intervalHeavenlyStrike and #intervalHeavenlyStrike > 0
+	if #timeDiff >= #intervalHS and #intervalHS > 0
 		#lastPressHeavenlyStrike = #secondsTotal
 		touchPress 0 40 710
 		#time = #time + 200
@@ -1350,7 +1348,7 @@ goto :levelHeroesPressLevelUp
 
 	#time = #time + 460
 	
-	if #pressLevelUpLoopCount < #skillIntensity
+	if #pressLevelUpLoopCount < #heroIntensity
 		goto :levelHeroesPressLevelUp
 	endif
 	#pressLevelUpLoopCount = 0
