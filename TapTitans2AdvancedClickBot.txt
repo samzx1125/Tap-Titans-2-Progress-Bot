@@ -40,10 +40,10 @@ var #decline 0
 // ----------- Actions ----------- [ Prestige ]
 
 var #enableAutoprestige 1
-//1 for on, 0 for don't prestige
+// 1 for on, 0 for don't prestige
 
 var #lateTournament 0
-// use 1 if you want to start at later time define below in #minz
+// use 1 if you want to start at later time defined below in #minz
 
 #minz = 60000 * 125
 // starts at 125 mins; else, edit the 125 above
@@ -102,20 +102,22 @@ var #heroIntensity 4
 var #enableSkills 1
 
 //press given skills every X seconds
+//check :afterPrestige and copy values!
 var #intervalHS 10
-var #intervalCrit 0
-var #intervalFireBlade 0
-var #intervalMidas 0
-var #intervalHeroes 0
-var #intervalShadowClone 120
+var #intervalDS 0
+var #intervalFS 0
+var #intervalHoM 0
+var #intervalWC 0
+var #intervalSC 120
 
+//preferably don't edit this
 if #lateTournament == 1
 	#intervalHS = 0
-	#intervalCrit = 0
-	#intervalFireBlade = 0
-	#intervalMidas = 0
-	#intervalHeroes = 0
-	#intervalShadowClone = 0
+	#intervalDS = 0
+	#intervalFS = 0
+	#intervalHoM = 0
+	#intervalWC = 0
+	#intervalSC = 0
 endif
 
 //just level each skill once
@@ -129,6 +131,8 @@ var #startSkillCheckNow 1
 // ----------- Actions ----------- [ Boss ]
 //cancel actions if boss fight running
 var #checkBossFight 0
+
+var #checkBossDuringRandomTouch 1
 
 //wait for given skill (2-6) then start boss
 var #startBossSkill 5
@@ -154,6 +158,10 @@ var #showCurrentTime 1
 
 //if you wanna sync the script time with real time you can play around with this value
 var #timeScaleAddition 60
+
+if #checkBossDuringRandomTouch == 0
+	#timeScaleAddition = 17
+endif
 
 
 // ----------- Dec
@@ -222,12 +230,12 @@ var #seconds 0
 var #secondsTotal 0
 var #minutes 0
 
-var #lastPressHeavenlyStrike 0
-var #lastPressCrit 0
-var #lastPressFireBlade 0
-var #lastPressMidas 0
-var #lastPressShadowClone 0
-var #lastPressHeroes 0
+var #lastPressHS 0
+var #lastPressDS 0
+var #lastPressFS 0
+var #lastPressHoM 0
+var #lastPressSC 0
+var #lastPressWC 0
 
 var #resultManaPool 0
 var #resultCheckBoss 0
@@ -259,49 +267,45 @@ var #resultClanQuest 0
 		#minutes = (#time/1000)/60
 		
 		if #enableSkills == 1
-			if #minutes > 120
-				#intervalCrit = 1000
-				#intervalMidas = 1000
-				#intervalHeroes = 1000
-				
-			elseif #minutes > 75
-				#intervalCrit = 850
-				#intervalFireBlade = 0
-				#intervalMidas = 850
-				#intervalHeroes = 850
-				#intervalShadowClone = 0
-				
-			elseif #minutes > 65
-				#intervalCrit = 0
-				#intervalFireBlade = 0
-				#intervalMidas = 240
-				#intervalHeroes = 120
-				#intervalShadowClone = 0
-				
-			elseif #minutes > 60
-				#intervalCrit = 0
-				#intervalFireBlade = 0
-				#intervalMidas = 700
-				#intervalHeroes = 700
-				#intervalShadowClone = 0
-				
-			elseif #minutes > 50
-				#intervalHeroes = 400
-				
-			elseif #minutes > 45
-				#intervalHS = 0
-				#intervalHeroes = 375
-				#fullManaSkill = 5
-				
-			elseif #minutes > 40
-				#intervalHS = 300
-				
-			elseif #minutes > 25
+		
+//copy format if you wanna add your own personal dynamic skill clicks
+
+			if #secondsTotal > 301
+				#intervalSC = 0
+			endif
+			if #minutes > 25
 				#intervalHS = 150
-				
-			elseif #secondsTotal > 301
-				#intervalHS = 100
-				#intervalShadowClone = 0
+			endif
+			if #minutes > 40
+				#intervalHS = 300
+			endif	
+			if #minutes > 45
+				#intervalHS = 0
+				#intervalWC = 375
+				#fullManaSkill = 5
+			endif				
+			if #minutes > 50
+				#intervalWC = 400
+				#intervalHoM = 400
+			endif
+			if #minutes > 60
+				#intervalHoM = 700
+				#intervalWC = 700
+			endif
+			if #minutes > 65
+				#intervalHoM = 240
+				#intervalWC = 120
+			endif
+			if #minutes > 75
+				#intervalDS = 850
+				#intervalHoM = 850
+				#intervalWC = 850
+			endif
+			if #minutes > 120
+				#intervalDS = 1000
+				#intervalHoM = 1000
+				#intervalWC = 1000
+			endif
 		endif
 	endif
 	
@@ -362,11 +366,11 @@ var #resultClanQuest 0
 	#count = 0
 	
 	#intervalHS = 10
-	#intervalCrit = 0
-	#intervalFireBlade = 0
-	#intervalMidas = 0
-	#intervalHeroes = 0
-	#intervalShadowClone = 120
+	#intervalDS = 0
+	#intervalFS = 0
+	#intervalHoM = 0
+	#intervalWC = 0
+	#intervalSC = 120
 	
 	#fullManaSkill = 1
 	
@@ -400,12 +404,12 @@ goto :init
 		#time = #time + 200
 	endif
 
-	#lastPressHeavenlyStrike = 0
-	#lastPressCrit = 0
-	#lastPressFireBlade = 0
-	#lastPressMidas = 0
-	#lastPressShadowClone = 0
-	#lastPressHeroes = 0
+	#lastPressHS = 0
+	#lastPressDS = 0
+	#lastPressFS = 0
+	#lastPressHoM = 0
+	#lastPressSC = 0
+	#lastPressWC = 0
 	#timeLastActionRun = 0
 
 	touchDown 0 #menuCloseX #menuCloseY
@@ -460,39 +464,39 @@ goto :init
 		touchPress 0 390 36
 	endif
 	
-	#timeDiff = #secondsTotal - #lastPressHeroes
-	if #timeDiff >= #intervalHeroes and #intervalHeroes > 0
-		#lastPressHeroes = #secondsTotal
+	#timeDiff = #secondsTotal - #lastPressWC
+	if #timeDiff >= #intervalWC and #intervalWC > 0
+		#lastPressWC = #secondsTotal
 		touchPress 0 360 710
 		#time = #time + 200
 	endif
-	#timeDiff = #secondsTotal - #lastPressCrit
-	if #timeDiff >= #intervalCrit and #intervalCrit > 0
-		#lastPressCrit = #secondsTotal
+	#timeDiff = #secondsTotal - #lastPressDS
+	if #timeDiff >= #intervalDS and #intervalDS > 0
+		#lastPressDS = #secondsTotal
 		touchPress 0 120 710
 		#time = #time + 200
 	endif
-	#timeDiff = #secondsTotal - #lastPressFireBlade
-	if #timeDiff >= #intervalFireBlade and #intervalFireBlade > 0
-		#lastPressFireBlade = #secondsTotal
+	#timeDiff = #secondsTotal - #lastPressFS
+	if #timeDiff >= #intervalFS and #intervalFS > 0
+		#lastPressFS = #secondsTotal
 		touchPress 0 280 710
 		#time = #time + 200
 	endif
-	#timeDiff = #secondsTotal - #lastPressMidas
-	if #timeDiff >= #intervalMidas and #intervalMidas > 0
-		#lastPressMidas = #secondsTotal
+	#timeDiff = #secondsTotal - #lastPressHoM
+	if #timeDiff >= #intervalHoM and #intervalHoM > 0
+		#lastPressHoM = #secondsTotal
 		touchPress 0 200 710
 		#time = #time + 200
 	endif
-	#timeDiff = #secondsTotal - #lastPressShadowClone
-	if #timeDiff >= #intervalShadowClone and #intervalShadowClone > 0
-		#lastPressShadowClone = #secondsTotal
+	#timeDiff = #secondsTotal - #lastPressSC
+	if #timeDiff >= #intervalSC and #intervalSC > 0
+		#lastPressSC = #secondsTotal
 		touchPress 0 430 710
 		#time = #time + 200
 	endif
-	#timeDiff = #secondsTotal - #lastPressHeavenlyStrike
+	#timeDiff = #secondsTotal - #lastPressHS
 	if #timeDiff >= #intervalHS and #intervalHS > 0
-		#lastPressHeavenlyStrike = #secondsTotal
+		#lastPressHS = #secondsTotal
 		touchPress 0 40 710
 		#time = #time + 200
 	endif
@@ -524,9 +528,9 @@ goto :start
 			//activate DS
 			touchPress 0 200 710
 			//activate Midas
-			#lastPressHeroes = #secondsTotal + 120
-			#lastPressMidas = #secondsTotal + 120
-			#lastPressCrit = #secondsTotal + 120
+			#lastPressWC = #secondsTotal + 120
+			#lastPressHoM = #secondsTotal + 120
+			#lastPressDS = #secondsTotal + 120
 		endif
 	elseif #fullManaSkill == 6
 		touchPress 0 430 710
@@ -818,7 +822,7 @@ goto :clanQuestClose
 
 
 	
-// ----------- CHECK SKILLS
+// ----------- LEVEL SKILLS
 :checkSkills
 
 	if #prestige == 0 and #startSkillCheckNow == 0
@@ -864,6 +868,7 @@ goto :checkSkillsFinish
 	getColor #skillAvailable 460 730
 	if #skillAvailable < -1000000
 		sleep 10
+		goto :checkSkillsSlideDown
 	else
 		touchPress 0 460 730
 		sleep 50
@@ -882,8 +887,32 @@ goto :checkSkillsFinish
 	
 :maxHS
 	// first skill; heavenly strike
+	
+	#loopBreak = #loopBreak + 1
+
+	if #loopBreak > 16
+		#loopBreak = 0
+		
+		//slide top
+		touchDown 0 280 650
+		sleep 200
+		touchMove 0 280 600
+		sleep 50
+		touchMove 0 280 700
+		sleep 50
+		touchMove 0 280 750
+		sleep 50
+		touchMove 0 280 780
+		touchUp 0
+		sleep 750
+		#time = #time + 1100
+		
+		goto :checkSkills
+	endif
+	
 	getColor #skillAvailable 460 700
 	if #skillAvailable > -7963574 and #skillAvailable < -7034609
+		#loopBreak = 0
 		goto :checkSkills
 	else
 		touchPress 0 466 700
@@ -897,7 +926,7 @@ goto :checkSkillsFinish
 	sleep 200
 	#time = #time + 250
 	
-	getRGB #colorRed #colorGreen #colorBlue 450 710
+	getRGB #colorRed #colorGreen #colorBlue 450 660
 	
 	if #colorBlue == 2 or #colorBlue == 5
 		#skillsUnlocked = #skillsUnlocked + 1
@@ -905,7 +934,7 @@ goto :checkSkillsFinish
 	
 	if #colorBlue == 2
 		sleep 100
-		touchDown 0 466 730
+		touchDown 0 466 660
 		sleep 250
 		touchUp 0
 		sleep 200
@@ -919,7 +948,7 @@ goto :checkSkillsFinish
 			goto :checkSkillsSlideDown
 		else
 			touchPress 0 466 745
-			sleep 40
+			sleep 50
 			#time = #time + 50
 		endif
 		
@@ -1180,7 +1209,7 @@ goto :scrollTop
 	
 	#loopBreak = #loopBreak + 1
 	
-	if #loopBreak > 60
+	if #loopBreak > 63
 		#loopBreak = 0
 		goto :levelHeroesScrollDown
 	endif
@@ -1192,7 +1221,7 @@ goto :scrollTop
 	else
 		touchPress 0 460 670
 		sleep 50
-		#time = #time + 55
+		#time = #time + 50
 		goto :maxTopHero
 	endif
 
@@ -1239,7 +1268,7 @@ goto :scrollTop
 	
 	#loopBreak = #loopBreak + 1
 
-	if #loopBreak > 60
+	if #loopBreak > 63
 		#loopBreak = 0
 		goto :levelHeroesPressLevelUp
 	endif
@@ -1250,7 +1279,7 @@ goto :scrollTop
 		goto :levelHeroesPressLevelUp
 	else
 		touchPress 0 466 720
-		sleep 40
+		sleep 50
 		#time = #time + 50
 		goto :maxBottomHero
 	endif
@@ -1260,9 +1289,9 @@ goto :scrollTop
 	#minutes = (#time/1000)/60
 	
 	if #lateTournament == 1
-		#lastPressHeroes = #secondsTotal
-		#lastPressMidas = #secondsTotal
-		#lastPressCrit = #secondsTotal
+		#lastPressWC = #secondsTotal
+		#lastPressHoM = #secondsTotal
+		#lastPressDS = #secondsTotal
 	endif
 	
 goto :levelHeroesPressLevelUp
@@ -1379,7 +1408,7 @@ goto :levelHeroesSlideUpCollection
 	sleep 50
 	touchMove 0 280 780
 	touchUp 0
-	sleep 750
+	sleep 600
 	#time = #time + 1100
 	
 goto :levelUpLoop
@@ -1519,19 +1548,21 @@ goto :pressSkills
 // ----------- RANDOM ATTACK
 :randomTouch
 
-	getColor #color 390 36
-	if #color == 1204718
-		touchPress 0 390 36
-		if #minutes > 35
-			#time = #time + 10
-			#lastPressHeroes = #secondsTotal
-			touchPress 0 360 710
-						
-			if #minutes > 63
-				sleep 40
-				#time = #time + 40
-				#lastPressCrit = #secondsTotal
-				touchPress 0 120 710
+	if #checkBossDuringRandomTouch == 1
+		getColor #color 390 36
+		if #color == 1204718 and 
+			touchPress 0 390 36
+			if #minutes > 35
+				#time = #time + 10
+				#lastPressWC = #secondsTotal
+				touchPress 0 360 710
+							
+				if #minutes > 63
+					sleep 40
+					#time = #time + 40
+					#lastPressDS = #secondsTotal
+					touchPress 0 120 710
+				endif
 			endif
 		endif
 	endif
@@ -1545,7 +1576,7 @@ goto :pressSkills
 	endif
 	
 	//equipment stacking
-	if #equipStack ==1
+	if #equipStack == 1
 		if #randomX > 280 and #randomX < 430 and #randomY > 300
 			goto :randomTouch
 		endif
@@ -1575,6 +1606,9 @@ goto :pressSkills
 	
 	//sleep #hitDelay
 	#time = #time + #hitDelay
-	#hitCount = #hitCount + 1
+	
+	if #agree == 1 or #decline == 1
+		#hitCount = #hitCount + 1
+	endif
 	
 goto :start
