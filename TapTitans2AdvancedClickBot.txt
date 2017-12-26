@@ -1,11 +1,10 @@
 // -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1]
-// edited by djo5296 '17-12-26
+// edited by djo5296 '17-12-26 v2
 
 SCREEN_SIZE: 480x800
 // ----------- do not touch
 var #minz 0
 var #timeLateAdd 0
-var #stopMasterAfterSkillsUnlocked 1
 // ----------- Click Areas
 
 var #enableFairies 1
@@ -35,7 +34,7 @@ var #decline 0
 // agree = 1 if you can skip ads to auto accept fairy ads; aka fairy ads skippable
 // decline = 1 if you cannot turn off fairy ads but want to click on all fairies
 // you can leave both at 0 if you turn off fairy ads
-// do not use make both = 1 hahaha
+// do not make both = 1 hahaha
 
 // ----------- Actions ----------- [ Prestige ]
 
@@ -77,10 +76,9 @@ var #fullManaSkill 1
 //; 5 = heroes
 //; 6 = shadow clone
 
-//Action Order | 1,2,3 = push heroes | 2,3,1 = push ms
+//Action Order | 1,2 = push heroes | 2,1 = push ms
 var #orderLevelHeroes 1
-var #orderLevelMaster 2
-var #orderLevelSkills 3
+var #orderLevelSkills 2
 
 // ----------- Actions ----------- [ ClanQuest ]
 var #enableClanQuest 1
@@ -108,7 +106,7 @@ var #intervalDS 0
 var #intervalFS 0
 var #intervalHoM 0
 var #intervalWC 0
-var #intervalSC 120
+var #intervalSC 20
 
 //preferably don't edit this
 if #lateTournament == 1
@@ -192,6 +190,7 @@ var #count 0
 var #hitCount 0
 var #skillAvailable 0
 var #loopBreak 0
+var #unlocked 0
 
 // ----------- Delays
 var #btnDelay 150
@@ -248,7 +247,7 @@ var #resultClanQuest 0
 	#loopCount = #loopCount + 1
 
 	#resultManaPool = #loopCount % 51
-	#resultCheckBoss = #loopCount % 102
+	#resultCheckBoss = #loopCount % 302
 	#resultClanQuest = #loopCount % 101
 	#resultUpdateTime = #loopCount % 40
 
@@ -270,7 +269,7 @@ var #resultClanQuest 0
 		
 //copy format if you wanna add your own personal dynamic skill clicks
 
-			if #secondsTotal > 301
+			if #minutes > 5
 				#intervalSC = 0
 			endif
 			if #minutes > 25
@@ -364,6 +363,7 @@ var #resultClanQuest 0
 	#secondsTotal = 0
 	#minutes = 0
 	#count = 0
+	#unlocked = 0
 	
 	#intervalHS = 10
 	#intervalDS = 0
@@ -469,6 +469,12 @@ goto :init
 		#lastPressWC = #secondsTotal
 		touchPress 0 360 710
 		#time = #time + 200
+		
+		if #minutes > 60
+			#lastPressHoM = #secondsTotal
+			touchPress 0 200 710
+			#time = #time + 200
+		endif
 	endif
 	#timeDiff = #secondsTotal - #lastPressDS
 	if #timeDiff >= #intervalDS and #intervalDS > 0
@@ -523,15 +529,13 @@ goto :start
 		touchPress 0 280 710
 	elseif #fullManaSkill == 5
 		touchPress 0 360 710
-		if #minutes > 52
+		if #minutes > 50
 			touchPress 0 200 710
 			//activate Midas
-			touchPress 0 120 710
-			//activate DS
 			#lastPressWC = #secondsTotal + 120
 			#lastPressHoM = #secondsTotal + 120
 		endif
-		if #minutes > 125
+		if #minutes >= 125
 			touchPress 0 120 710
 			//activate DS
 			#lastPressDS = #secondsTotal + 120
@@ -556,11 +560,7 @@ goto :start
 		goto :pressSkills
 	endif
 
-	if #actionStepper == #orderLevelMaster and #skillsUnlocked < 6 and #stopMasterAfterSkillsUnlocked == 1
-		goto :levelUp
-	elseif #actionStepper == #orderLevelMaster and #stopMasterAfterSkillsUnlocked == 0
-		goto :levelUp
-	elseif #actionStepper == #orderLevelSkills and #enableSkills == 1 and  #skillsUnlocked < 6
+	if #actionStepper == #orderLevelSkills and #enableSkills == 1 and  #skillsUnlocked < 6
 		#skillsUnlocked = 0
 		goto :checkSkills
 	elseif #actionStepper == #orderLevelHeroes and #enableHeroes == 1
@@ -850,10 +850,8 @@ goto :clanQuestClose
 		
 		goto :maxHS
 		
-	elseif #skillCheckStepper <= 6 and #justUnlockSkills == 0
+	elseif #skillCheckStepper <= 6
 		goto :checkSkillsUnlock
-	else
-		goto :checkSkillsFinish
 	endif
 
 	//slide back
@@ -870,25 +868,47 @@ goto :clanQuestClose
 	#time = #time + 350
 goto :checkSkillsFinish
 
-:maxSkill
+:lvlSkill
 	sleep 100
 	#time = #time + 100
 	
-	getRGB #colorRed #colorGreen #colorBlue 459 755
-	if #colorBlue <= -45
-		sleep 10
-		#time = #time + 10
-		goto :checkSkillsSlideDown
-	else
-		touchPress 0 459 755
-		sleep 50
-		touchPress 0 459 755
-		sleep 50
-		touchPress 0 459 755
-		
-		#time = #time + 100
-	endif
+	if #justUnlockSkills == 1
+		if #skillCheckStepper > 1 and #unlocked > 4
+			goto :endLvlSkill
+		else
+			touchPress 0 459 755
+			sleep 50
+			
+			#time = #time + 50
+
+			if #unlocked < 5
+				#unlocked = #unlocked + 1
+			endif
+
+			goto :endLvlSkill
+		endif
 	
+	else
+		getRGB #colorRed #colorGreen #colorBlue 459 755
+		if #colorBlue <= -45
+			sleep 10
+			#time = #time + 10
+			goto :checkSkillsSlideDown
+		else
+			touchPress 0 459 755
+			sleep 50
+			touchPress 0 459 755
+			sleep 50
+			touchPress 0 459 755
+			
+			#time = #time + 100
+		endif
+		
+		goto :endLvlSkill
+		
+	endif
+
+:endLvlSkill
 	if #skillCheckStepper == 6
 		goto :checkSkills
 	else
@@ -965,7 +985,7 @@ goto :checkSkillsFinish
 		getColor #skillAvailable 466 730
 		if #skillAvailable == #skillBlue
 		else
-			goto :maxSkill
+			goto :lvlSkill
 		endif
 	endif
 	
@@ -1397,47 +1417,6 @@ goto :levelHeroesPressLevelUp
 	endif
 	#pressLevelUpLoopCount = 0
 goto :levelHeroesSlideUpCollection
-
-// ----------- LEVEL UP
-:levelUp
-	//open stats
-	sleep #btnDelay
-	#time = #time + #btnDelay
-	touchDown 0 #menuStats #menuY
-	sleep #btnDelay
-	#time = #time + #btnDelay
-	touchUp 0
-		
-	//wait for slide
-	sleep #menuSlideDelay
-	#time = #time + #menuSlideDelay
-	
-	//slide top
-	touchDown 0 280 650
-	sleep 200
-	touchMove 0 280 600
-	sleep 50
-	touchMove 0 280 700
-	sleep 50
-	touchMove 0 280 750
-	sleep 50
-	touchMove 0 280 780
-	touchUp 0
-	sleep 600
-	#time = #time + 1100
-	
-goto :levelUpLoop
-
-
-:levelUpLoop
-	//lvl up sword master
-	sleep #btnDelay
-	#time = #time + #btnDelay
-	//sword master level up now moved to start of level up process before heroes
-	if #enableSkills == 1 or #enableHeroes == 1
-		goto :runActions
-	endif
-goto :closeMenu
 
 :closeMenu
 	//close stats
