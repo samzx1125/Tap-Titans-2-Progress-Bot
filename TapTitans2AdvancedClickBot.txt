@@ -1,5 +1,5 @@
 // -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1]
-// edited by djo5296 '17-12-26 v2
+// edited by djo5296 '17-12-26 v3
 
 SCREEN_SIZE: 480x800
 // ----------- do not touch
@@ -562,7 +562,7 @@ goto :start
 
 	if #actionStepper == #orderLevelSkills and #enableSkills == 1 and  #skillsUnlocked < 6
 		#skillsUnlocked = 0
-		goto :checkSkills
+		goto :openSwordMasterTab
 	elseif #actionStepper == #orderLevelHeroes and #enableHeroes == 1
 		goto :levelHeroes
 	elseif #actionStepper == 5 and #enableClanQuest == 1
@@ -827,6 +827,40 @@ goto :clanQuestClose
 
 	
 // ----------- LEVEL SKILLS
+:openSwordMasterTab
+
+	//open sword master tab
+	sleep #btnDelay
+	#time = #time + #btnDelay
+	touchDown 0 #menuStats #menuY
+	sleep #btnDelay
+	#time = #time + #btnDelay
+	touchUp 0
+		
+	//wait for slide
+	sleep #menuSlideDelay
+	#time = #time + #menuSlideDelay
+	
+	//slide top
+	touchDown 0 280 650
+	sleep 200
+	touchMove 0 280 600
+	sleep 50
+	touchMove 0 280 700
+	sleep 50
+	touchMove 0 280 750
+	sleep 50
+	touchMove 0 280 780
+	touchUp 0
+	sleep 600
+	#time = #time + 1100
+	
+	if #enableSkills == 1 or #enableHeroes == 1
+		goto :checkSkills
+	endif
+
+goto :closeMenu
+
 :checkSkills
 
 	if #prestige == 0 and #startSkillCheckNow == 0
@@ -1474,6 +1508,8 @@ goto :pressSkills
 
 :startBossWithSkills
 
+	toast starting boss with skills
+
 	getColor #color 390 36
 	if #color == 1204718
 		touchPress 0 390 36
@@ -1550,19 +1586,33 @@ goto :pressSkills
 :randomTouch
 
 	if #checkBossDuringRandomTouch == 1
+			
 		getColor #color 390 36
 		if #color == 1204718
-			touchPress 0 390 36
-			if #minutes > 35
-				#time = #time + 10
-				#lastPressWC = #secondsTotal
-				touchPress 0 360 710
-							
-				if #minutes > 63
-					sleep 40
-					#time = #time + 40
-					#lastPressDS = #secondsTotal
-					touchPress 0 120 710
+			toast Random Touch boss check succeed
+			getColor #color1 348 685
+			getColor #color2 459 29
+			if #color1 == #colorWhite and #color2 == #colorBlack
+			
+				touchPress 0 390 36
+				if #minutes > 35
+					#time = #time + 10
+					#lastPressWC = #secondsTotal
+					touchPress 0 360 710
+								
+					if #minutes > 55
+						sleep 40
+						#time = #time + 40
+						#lastPressHoM = #secondsTotal
+						touchPress 0 200 710
+					endif
+					
+					if #minutes > 80
+						sleep 40
+						#time = #time + 40
+						#lastPressDS = #secondsTotal
+						touchPress 0 120 710
+					endif
 				endif
 			endif
 		endif
