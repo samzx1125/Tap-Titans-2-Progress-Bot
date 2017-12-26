@@ -1,5 +1,5 @@
 // -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1]
-// edited by djo5296 '17-12-25
+// edited by djo5296 '17-12-26
 
 SCREEN_SIZE: 480x800
 // ----------- do not touch
@@ -160,7 +160,7 @@ var #showCurrentTime 1
 var #timeScaleAddition 60
 
 if #checkBossDuringRandomTouch == 0
-	#timeScaleAddition = 17
+	#timeScaleAddition = 11
 endif
 
 
@@ -248,7 +248,7 @@ var #resultClanQuest 0
 	#loopCount = #loopCount + 1
 
 	#resultManaPool = #loopCount % 51
-	#resultCheckBoss = #loopCount % 302
+	#resultCheckBoss = #loopCount % 102
 	#resultClanQuest = #loopCount % 101
 	#resultUpdateTime = #loopCount % 40
 
@@ -523,13 +523,17 @@ goto :start
 		touchPress 0 280 710
 	elseif #fullManaSkill == 5
 		touchPress 0 360 710
+		if #minutes > 52
+			touchPress 0 200 710
+			//activate Midas
+			touchPress 0 120 710
+			//activate DS
+			#lastPressWC = #secondsTotal + 120
+			#lastPressHoM = #secondsTotal + 120
+		endif
 		if #minutes > 125
 			touchPress 0 120 710
 			//activate DS
-			touchPress 0 200 710
-			//activate Midas
-			#lastPressWC = #secondsTotal + 120
-			#lastPressHoM = #secondsTotal + 120
 			#lastPressDS = #secondsTotal + 120
 		endif
 	elseif #fullManaSkill == 6
@@ -846,8 +850,10 @@ goto :clanQuestClose
 		
 		goto :maxHS
 		
-	elseif #skillCheckStepper <= 6
+	elseif #skillCheckStepper <= 6 and #justUnlockSkills == 0
 		goto :checkSkillsUnlock
+	else
+		goto :checkSkillsFinish
 	endif
 
 	//slide back
@@ -865,18 +871,22 @@ goto :clanQuestClose
 goto :checkSkillsFinish
 
 :maxSkill
-	getColor #skillAvailable 460 730
-	if #skillAvailable < -1000000
+	sleep 100
+	#time = #time + 100
+	
+	getRGB #colorRed #colorGreen #colorBlue 459 755
+	if #colorBlue <= -45
 		sleep 10
+		#time = #time + 10
 		goto :checkSkillsSlideDown
 	else
-		touchPress 0 460 730
+		touchPress 0 459 755
 		sleep 50
-		touchPress 0 460 730
+		touchPress 0 459 755
 		sleep 50
-		touchPress 0 460 730
+		touchPress 0 459 755
 		
-		#time = #time + 150
+		#time = #time + 100
 	endif
 	
 	if #skillCheckStepper == 6
@@ -911,8 +921,9 @@ goto :checkSkillsFinish
 	endif
 	
 	getColor #skillAvailable 460 700
-	if #skillAvailable > -7963574 and #skillAvailable < -7034609
+	if #skillAvailable >= -7963574 and #skillAvailable <= -7034609
 		#loopBreak = 0
+		
 		goto :checkSkills
 	else
 		touchPress 0 466 700
@@ -947,7 +958,6 @@ goto :checkSkillsFinish
 		if #skillAvailable == #skillBlue
 			goto :checkSkillsSlideDown
 		else
-			touchPress 0 466 745
 			sleep 50
 			#time = #time + 50
 		endif
@@ -1069,7 +1079,8 @@ goto :runActions
 			#time = #time + 1100
 		endif
 		
-		//lvl up
+		//lvl up sword master to 500
+		//use x100 level up else, adjust
 		sleep #btnDelay
 		#time = #time + #btnDelay
 		
@@ -1236,7 +1247,7 @@ goto :scrollTop
 		#loopDetectionCount = 0
 		goto :maxBottomHero
 	endif
-
+	
 	touchDown 1 280 750
 	touchMove 1 280 745
 	sleep 100
@@ -1257,6 +1268,10 @@ goto :scrollTop
 	sleep 200
 	
 	#time = #time + 470
+	
+	if #minutes >= 51
+		goto :maxBottomHero
+	endif
 	
 	goto :levelHeroesScrollDown
 
@@ -1475,6 +1490,24 @@ goto :runActions
 		sleep #btnDelay
 		#time = #time + #btnDelay
 	endif
+		
+goto :pressSkills
+
+:startBossWithSkills
+
+	getColor #color 390 36
+	if #color == 1204718
+		touchPress 0 390 36
+	endif
+	
+	getColor #color 390 36
+	if #color == 1204718
+		touchPress 0 390 36
+		goto :startBossWithSkills
+	endif
+	
+	#time = #time + 400
+	
 	if #enableClanShip == 1
 		touchPress 0 65 100
 		sleep #shipDelay
@@ -1486,30 +1519,19 @@ goto :runActions
 		sleep #shipDelay
 		#time = #time + #shipDelay + #shipDelay + #shipDelay + #shipDelay
 	endif
-		
-goto :pressSkills
-
-:startBossWithSkills
-
-	getColor #color 390 36
-	if #color == 1204718
-		touchPress 0 390 36
-	endif
-	
-	#time = #time + 200
 	
 	if #startBossSkill == 2
 		touchPress 0 120 710
 		sleep 200
 		goto :startBossWithSecondarySkill
 	endif
-	if #startBossSkill == 4
-		touchPress 0 280 710
+	if #startBossSkill == 3
+		touchPress 0 200 710
 		sleep 200
 		goto :startBossWithSecondarySkill
 	endif
-	if #startBossSkill == 3
-		touchPress 0 200 710
+	if #startBossSkill == 4
+		touchPress 0 280 710
 		sleep 200
 		goto :startBossWithSecondarySkill
 	endif
@@ -1528,11 +1550,11 @@ goto :pressSkills
 	if #startBossSecondarySkill == 2
 		touchPress 0 120 710
 	endif
-	if #startBossSecondarySkill == 4
-		touchPress 0 280 710
-	endif
 	if #startBossSecondarySkill == 3
 		touchPress 0 200 710
+	endif
+	if #startBossSecondarySkill == 4
+		touchPress 0 280 710
 	endif
 	if #startBossSecondarySkill == 5
 		touchPress 0 360 710
@@ -1550,7 +1572,7 @@ goto :pressSkills
 
 	if #checkBossDuringRandomTouch == 1
 		getColor #color 390 36
-		if #color == 1204718 and 
+		if #color == 1204718
 			touchPress 0 390 36
 			if #minutes > 35
 				#time = #time + 10
@@ -1604,7 +1626,10 @@ goto :pressSkills
 		touchUp 0
 	endif	
 	
-	//sleep #hitDelay
+	if #checkBossDuringRandomTouch == 0
+		sleep 30
+	endif
+	
 	#time = #time + #hitDelay
 	
 	if #agree == 1 or #decline == 1
