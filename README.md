@@ -9,41 +9,40 @@ A HiroMacro script for Tap Titans game
  - Random Hits
  - Autostart any skill on full mana
  - Autostart boss fights with midas
-   >changed old behavior to auto start midas instead of specifying in the settings
-   >later in a run after X minutes, will also activate DS and Midas
-     >>be sure to edit this setting if you don't like it
+   - changed old behavior to auto start midas instead of specifying in the settings
+   - later in a run after X minutes, will also activate DS and Midas
+     - be sure to edit this setting if you don't like it
  - Boss detection (no actions while fighting vs a boss)
  - Autofight ClanQuest
  - Autobuy skills
-   >always max HS
-   >other skills level up using 2-3 taps (skill cancellation FIXED in pull request Dec 26 update)
+   - always max HS
+   - other skills level up using 2-3 taps (skill cancellation FIXED in pull request Dec 26 update)
  - Autolevel heroes with scroll detection & spam
-   >max top most hero first, then bottom most hero
-   >level everyone else accdg to #heroIntensity
+   - max top most hero first, then bottom most hero
+   - level everyone else accdg to #heroIntensity
  - Autostart skills every X minutes
-   >make sure you edit both Action-Skills and afterPrestige sections
+   - make sure you edit both Action-Skills and afterPrestige sections
  - #lateTournament in case you need to stop then re-start mid-run (remember/estimate your current run time!)
-   >will always start at #minz minutes so be sure to turn this off once you prestige #bug
+   - will always start at #minz minutes so be sure to turn this off once you prestige #bug
  - dynamic changing of intervalSkill based on time elapsed (change according to preference)
  - Stop leveling older heroes after X minutes
    
 ## Changes from last code
  UPDATED
- -stop leveling up non-main heroes after X minutes
-  >because heroes now have a lvl 6k cap, it doesn't matter if you keep leveling old heroes because you need to get all passive skills, also for future ascension
-  >should now stop visiting your older heroes after 51 minutes (look for this section under :levelHeroesScrollDown
+ - stop leveling up non-main heroes after X minutes
+   - because heroes now have a lvl 6k cap, it doesn't matter if you keep leveling old heroes because you need to get all passive skills, also for future ascension
+   - should now stop visiting your older heroes after 51 minutes (look for this section under :levelHeroesScrollDown
 
  CHANGED
  - startBossSkill: 0|1|2|3|4|5|6 (If the boss fight fails, the bot will wait for this skill before the next boss start)
  - startBossSecondarySkill: 0|1|2|3|4|5|6 (The bot press this skill on boss fight start, but without checking availability)
-  >reworked into always click "FIGHT BOSS" whenever it appears
-  >>also clicks on skill Heroes, and later on Midas and DS as well
-  >click "FIGHT BOSS" now OPTIONAL using checkBossDuringRandomTouch
-  >>if off, will follow old system for boss fight checks; UNTESTED
+   - reworked into clicking "FIGHT BOSS" whenever it appears during randomTouch; OPTIONAL
+     - also clicks on skill Heroes, and later on Midas and DS as well
+     - if off, will follow old system for boss fight checks; UNTESTED
  
 ## Coming Soon
   - stop leveling already maxed heroes especially the really early heroes
-  >may need to just calibrate; function already present
+    - may need to just calibrate; function already present
 
 ## Basic Requirements:
  - Android Device or Emulator
@@ -91,6 +90,6 @@ A HiroMacro script for Tap Titans game
 ## In case I missed anything
  - check top section of code and read descriptions there and all "//" comments present elsewhere
  - again, I am a pet user, prestiging at around 5500, current settings need editing to suit playstle, especially earlier MS
-   >all current settings apply to *MY* liking
-   >edit/add your own codes accdg to your own preference, I do not take requests to suit your playstyle. Maybe feature requests, though not sure
-   >do still report bugs
+   - all current settings apply to *MY* liking
+   - edit/add your own codes accdg to your own preference, I do not take requests to suit your playstyle. Maybe feature requests, though not sure
+   - do still report bugs
