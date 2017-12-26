@@ -1,5 +1,5 @@
 // -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1]
-// edited by djo5296 '17-12-25
+// edited by djo5296 '17-12-26
 
 SCREEN_SIZE: 480x800
 // ----------- do not touch
