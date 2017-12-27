@@ -56,33 +56,60 @@ Copy paste the scrolling sections in the places that need the extra scrolling. M
 - just read the names of each ":" section and where each brings you so you know where to place them. they shouldnt be hard to follow as each :section seems properly labeled
 
 For your convenience:
-> //scroll up
-  touchDown 0 280 650
-		sleep 200
-		touchMove 0 280 600
-		sleep 50
-		touchMove 0 280 700
-		sleep 50
-		touchMove 0 280 750
-		sleep 50
-		touchMove 0 280 780
-		touchUp 0
-		sleep 200
-		#time = #time + 550
+
+- //scroll up
+
+touchDown 0 280 650
+
+sleep 200
+
+touchMove 0 280 600
+
+sleep 50
+
+touchMove 0 280 700
+
+sleep 50
+
+touchMove 0 280 750
+
+sleep 50
+
+touchMove 0 280 780
+
+touchUp 0
+
+sleep 200
+
+#time = #time + 550
   
-> //scroll down
-	touchDown 1 280 740
-	sleep 200
-	touchMove 1 280 710
-	sleep 50
-	touchMove 1 280 500
-	sleep 50
-	touchMove 1 280 410
-	sleep 50
-	touchMove 1 280 400
-	touchUp 1
-	sleep 300
- #time = #time + 550
+  
+- //scroll down
+
+touchDown 1 280 740
+
+sleep 200
+
+touchMove 1 280 710
+
+sleep 50
+
+touchMove 1 280 500
+
+sleep 50
+
+touchMove 1 280 410
+
+sleep 50
+
+touchMove 1 280 400
+
+touchUp 1
+
+sleep 300
+
+#time = #time + 550
+
 
 Adjust coordinates by 1 or 2 numbers
 - as i have been repeating, since the code follows color checks, I have reported in an earlier response that some coordinates may just not "exist" (e.g. one of my values is "459 755" when my OC self wants it "460 755", but i cant use that value because hiro can't detect "460 755" for some reason)
