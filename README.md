@@ -1,6 +1,8 @@
 # Tap-Titans-2-Progress-Bot
 A HiroMacro script for Tap Titans game
+
 -by Tune389
+
 -edited by djo5296 (me)
 
 ## Features
@@ -52,7 +54,7 @@ To everyone with problems when leveling heroes or skills:
   - i.e. i can't replicate how the codes eff up when you run them on yours so I can't get a good grasp of how to fix them.
 
 Common fixes below:
-Copy paste the scrolling sections in the places that need the extra scrolling. Maybe it's not reaching where it's supposed to
+1) Copy paste the scrolling sections in the places that need the extra scrolling. Maybe it's not reaching where it's supposed to
 - just read the names of each ":" section and where each brings you so you know where to place them. they shouldnt be hard to follow as each :section seems properly labeled
 
 For your convenience:
@@ -110,8 +112,8 @@ sleep 300
 
 #time = #time + 550
 
-
-Adjust coordinates by 1 or 2 numbers
+- - - - - - - - - - - -
+2) Adjust coordinates by 1 or 2 numbers
 - as i have been repeating, since the code follows color checks, I have reported in an earlier response that some coordinates may just not "exist" (e.g. one of my values is "459 755" when my OC self wants it "460 755", but i cant use that value because hiro can't detect "460 755" for some reason)
 - if still none, find your own coordinates (and even color) that works for you by turning off hiro, going to settings, turn on location (and color) debug, then turn hiro back on. This adds lag as codes run so once you find what you need, turn off the debug settings and edit the coordinates and color values as what you have found
 
