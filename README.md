@@ -3,11 +3,13 @@ A HiroMacro script for Tap Titans game
 
 -by Tune389
 
--edited by djo5296 (me)
+-edited by djo5296
+-re-edited by chrisreyn
+-tested by tommy8208
 
 ## Features
  - Auto leveling sword master (only at the start of each code run)
- - Autoprestige after randomized X minutes, given a range
+ - Autoprestige after randomized X minutes, given a 10 minute range, specify least mins required
  - Random Hits
  - Autostart any skill on full mana
  - Autostart boss fights with any skill
@@ -19,35 +21,37 @@ A HiroMacro script for Tap Titans game
  - Autobuy skills
    - always max HS
    - other skills level up using 2-3 taps (skill cancellation FIXED in pull request Dec 26 update)
+     - skill cancellation FIXED in pull request Dec 26 update
+     - EDIT skill cancellation problem back due to Nox v 6.0.7.3 Android 5.1.1
    - if you want other skills only at level one, use #justUnlockSkills = 1
      - only reports of it not working but it should work... idk, i dont use it lol
  - Autolevel heroes with scroll detection & spam
    - max top most hero first, then bottom most hero
    - level everyone else accdg to #heroIntensity
  - Stop leveling older heroes after X minutes
-   - check under :levelHeroesScrollDown and check specified minutes
+   - check under :lvlTopHero and check specified minutes
  - Autostart skills every X minutes
-   - make sure you edit both Action-Skills settings at the top and ":afterPrestige" sections
- - #lateTournament in case you need to stop then re-start mid-run (remember/estimate your current run time!)
-   - will always start at #minz minutes so be sure to turn this off once you prestige #bug ish, just lazy to fix
+ - #lateRun in case you need to stop then re-start mid-run (remember/estimate your current run time!)
+   - will always start at #lateRun minutes so be sure to turn this off once you prestige
  - dynamic changing of intervalSkill based on time elapsed (change according to preference)
-   - look for resultUpdateTime
+   - look for resultUpdateTime and just set #intervalSKILL = to new value, where SKILL is skill acronym
    
 ## Changes from last code
  UPDATED
  - stop leveling up non-main heroes after X minutes
    - Heroes now have a lvl 6k cap, it doesn't matter if you keep leveling old heroes because you need to get all passive skills, also for future ascension
-   - should now stop visiting your older heroes after 51 minutes (look for this section under :levelHeroesScrollDown)
-
- CHANGED
- - startBossSkill: 0|1|2|3|4|5|6 (If the boss fight fails, the bot will wait for this skill before the next boss start)
- - startBossSecondarySkill: 0|1|2|3|4|5|6 (The bot press this skill on boss fight start, but without checking availability)
-   - reworked into clicking "FIGHT BOSS" whenever it appears during :randomTouch; uses #checkBossDuringRandomTouch setting
-     - also clicks on WC, and later on, Midas and DS as well
-     - CODE TIME RATE SLOWS DOWN IF ON!!!!!!!!!
-     - if #checkBossDuringRandomTouch == 0, will follow old system for boss fight checks and time properly syncs; UNTESTED
-       - off setting reported to not work lol. you can just delete the getColor part in :randomTouch
+   - should now stop visiting your older heroes after X minutes (look for this section under :lvlTopHero)
  
+## BUGS
+1) Hiro memory loss crash
+- Hiro restarts runs because it crashes
+- temporary workaround includes changing default Nox launcher to Nova (search online how)
+- if still crashing after already changing launchers, restart whole computer, not just Nox
+
+2) Buttons not fully pressing
+- because of the change from Android 4 to 5.1.1, an unexpected issue arose wherein buttons have difficulties being tapped
+- common workaround is to add touchUp right after touchDown or touchPress. Make sure to put a short sleep command after each touchX command
+
 ## FREQUENTLY ASKED QUESTIONS
 To everyone with problems when leveling heroes or skills:
 - I can't keep answering problems for leveling up heroes/skills since they dont happen to me
