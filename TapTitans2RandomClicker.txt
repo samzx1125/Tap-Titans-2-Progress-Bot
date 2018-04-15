@@ -1,29 +1,38 @@
 // -  Tap Titans 2 RandomClicker by Tune389 [ v1 ]
 //edited by djo5296 '17-12-23 v2
+// chrisreyn April 15 2018
 
 SCREEN_SIZE: 480x800
 
-var #delay 30
+var #delay 25
+var #count 0
 
 var #startX 60
 var #endX 415
 var #endY 420
-var #count 0
 
 // ----------- Settings
 var #startY 160
 // use 160 if w/ faries, 270 w/o
 
-var #CO 0
+var #CO 1
+var #PHoM 1
 var #bossAvailable 0
 var #equipmentStacking 1
-var #agree 0
+var #agree 1
 var #decline 0
 // agree = 1 if you can skip ads to auto accept fairy ads; aka fairy ads skippable
 // decline = 1 if you cannot turn off fairy ads but want to click on all fairies
 // you can leave both at 0 if you turn off fairy ads
-// do not use make both = 1 hahaha
+// do not make both = 1 hahaha
 
+// ----------- Skills
+var #HS 0
+var #DS 1
+var #FS 0
+var #HoM 1
+var #WC 1
+var #SC 1
 // ----------- Dec
 
 var #randomX 0
@@ -32,12 +41,13 @@ var #randomY 0
 // ----------- RANDOM ATTACK
 :start
 	if #bossAvailable == 1
-		getColor #color 390 36
-		if #color == 1204718
+		getColor #color 372 24
+		if #color == 1076975
+			toast FightBoss1
 			touchPress 0 390 36
-			touchPress 0 360 710
-			touchPress 0 120 710
-			//activates Heroes, Midas, DS in that order
+			sleep 40
+			touchUp
+			sleep 40
 		endif
 	endif
 	
@@ -57,43 +67,118 @@ var #randomY 0
 	touchDown 0 #randomX #randomY
 	touchUp 0
 	
-	if #CO == 1
-		touchDown 0 65 100
-		touchUp 0
-		touchDown 0 65 100
-		touchUp 0
-		touchDown 0 65 100
-		touchUp 0
-	endif
-	
 	sleep #delay
 	
 	#count = #count + 1
 	
-	if #count == 10
-		#count = 0
+	if #count == 25 or #count == 50 or #count == 75 or #count == 100
 		if #agree == 1
-			goto :agree
+			touchDown 0 300 630
+			sleep 25
+			touchUp 0
+			sleep 25
 		endif
 		if #decline == 1
-			goto :decline
+			touchDown 0 200 630
+			sleep 25
+			touchUp 0
+			sleep 25
+		endif
+		if #CO == 1
+			touchDown 0 65 100
+			sleep 25
+			touchUp 0
+			sleep 25
+			touchDown 0 65 100
+			sleep 25
+			touchUp 0
+			sleep 25
+			touchDown 0 65 100
+			sleep 25
+			touchUp 0
+			sleep 25
+		endif
+		if #PHoM == 1
+			touchDown 0 280 373
+			sleep 25
+			touchUp 0
+			sleep 25
 		endif
 	endif
 	
-goto :start
-
-:agree
-		
-	touchDown 0 300 630
-	touchUp 0
+// SKILLS SECTION
+	if #count == 100
+//SC
+		if #SC > 0
+			touchPress 0 430 710
+			sleep 25
+			touchUp 0
+			sleep 25
+			touchPress 0 430 710
+			sleep 25
+			touchUp 0
+			sleep 25
+		endif
+//HOM
+		if #HoM > 0
+			touchPress 0 200 710
+			sleep 25
+			touchUp 0
+			sleep 25
+			touchPress 0 200 710
+			sleep 25
+			touchUp 0
+			sleep 25
+		endif
+//DS
+		if #DS > 0
+			touchPress 0 120 710
+			sleep 25
+			touchUp 0
+			sleep 25
+			touchPress 0 120 710
+			sleep 25
+			touchUp 0
+			sleep 25
+		endif
+//WC
+		if #WC > 0
+			touchPress 0 360 710
+			sleep 25
+			touchUp 0
+			sleep 25
+			touchPress 0 360 710
+			sleep 25
+			touchUp 0
+			sleep 25
+		endif
+//FS
+		if #FS > 0
+			touchPress 0 280 710
+			sleep 25
+			touchUp 0
+			sleep 25
+			touchPress 0 280 710
+			sleep 25
+			touchUp 0
+			sleep 25
+		endif
+//HS
+		if #HS > 0
+			touchPress 0 40 710
+			sleep 25
+			touchUp 0
+			sleep 25
+			touchPress 0 40 710
+			sleep 25
+			touchUp 0
+			sleep 25
+		endif	
+	endif
+	
+	if #count > 99
+		#count = 0
+	endif
 	
 goto :start
-
-:decline
-		
-	touchDown 0 200 630
-	touchUp 0
-	
-goto :start
-		
 :end
