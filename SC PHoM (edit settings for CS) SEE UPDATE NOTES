@@ -293,7 +293,7 @@ goto :init
 // ---------- INIT
 
 :init
-	if #enablePremiumCollect == 1 and #agree == 1
+	if #enablePremiumCollect == 1
 		if #agree == 1
 			touchDown 0 350 630
 			sleep 50
