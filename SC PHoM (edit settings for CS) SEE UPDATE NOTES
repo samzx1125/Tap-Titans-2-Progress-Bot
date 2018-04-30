@@ -12,6 +12,7 @@ var #decline 0
 
 var #enableClanShip 1
 var #PHoM 1
+var #manaTournament 1
 
 var #enableTapping 1
 // 1 = (default) hit the titans with your sword master
@@ -153,6 +154,7 @@ rand #prestigeAfterXMinutes #prestigeStartTime #prestigeEndTime
 var #maxedOutSkills 0
 if #lateRun > 0
 	#maxedOutSkills = 2
+	#startSkillCheckNow = 0
 endif
 var #prestigeSlide 0
 // ---------- Delays
@@ -332,7 +334,7 @@ goto :init
 goto :start
 
 :loopDetected
-	toast loop detected - next action ...
+	toast loop detected - repeating ...
 	#loopCount = 0
 	#loopDetectionCount = 0
 goto :runActions
@@ -382,12 +384,17 @@ goto :runActions
 		#time = #time + 50
 	endif
 	
-	if #minutes < 16
+	if #manaTournament == 1
 		#colorRed = -1
 		#colorBlue = 0
 	else
-		getRGB #colorRed #colorGreen #colorBlue 410 705
-		#time = #time + 100
+		if #minutes < 16
+			#colorRed = -1
+			#colorBlue = 0
+		else
+			getRGB #colorRed #colorGreen #colorBlue 410 705
+			#time = #time + 100
+		endif
 	endif
 	
 	#timeDiff = #secondsTotal - #lastPressHoM
@@ -486,7 +493,7 @@ goto :start
 :runActions
 	#timeLastActionRun = #secondsTotal
 	#actionStepper = #actionStepper + 1
-
+	
 	if #actionStepper == 2 and #enableSkills == 1 and  #skillsUnlocked < 6
 		#skillsUnlocked = 0
 		goto :openSwordMasterTab
@@ -873,14 +880,37 @@ goto :endLvlSkill
 :maxHS
 	#loopBreak = #loopBreak + 1
 	if #loopBreak > 15
-		#loopBreak = 0		
-		goto :endLvlSkill
+		#loopBreak = 0
+		//slide back
+		touchDown 1 280 650
+		sleep 200
+		touchMove 1 280 600
+		sleep 50
+		touchMove 1 280 700
+		sleep 50
+		touchMove 1 280 750
+		sleep 50
+		touchMove 1 280 780
+		touchUp 1
+		//slide back
+		touchDown 1 280 650
+		sleep 200
+		touchMove 1 280 600
+		sleep 50
+		touchMove 1 280 700
+		sleep 50
+		touchMove 1 280 750
+		sleep 50
+		touchMove 1 280 780
+		touchUp 1
+		#time = #time + 350 * 2
+		goto :checkSkills
 	endif
 	
 	getColor #skillAvailable 460 691
 	if #skillAvailable >= -7963574 and #skillAvailable <= -7034609
 		#loopBreak = 0
-		goto :endLvlSkill
+		goto :checkSkills
 	endif
 	
 	touchPress 0 405 680
@@ -1073,9 +1103,11 @@ goto :closeMenu
 		if #count < 2
 			#count = #count + 1
 		endif
+		
 		if #count < 2
 			goto :levelHeroes
 		endif
+		
 		//close stats
 		sleep #btnDelay
 		#time = #time + #btnDelay
@@ -1088,10 +1120,10 @@ goto :closeMenu
 	
 	//collect gold
 	touchDown 0 30 230
-	sleep 100
+	sleep 50
 	touchUp 0
-	sleep 100
-	#time = #time + 200
+	sleep 50
+	#time = #time + 100
 	
 	if #agree == 1
 		touchDown 0 300 630
@@ -1137,14 +1169,15 @@ goto :closeMenu
 	
 	#loopDetectionCount = #loopDetectionCount + 1
 	if #loopDetectionCount > 4
+		#loopDetectionCount = 0
+		toast levelHeroes loop
 		goto :loopDetected
 	endif
 	
-	getColor #color1 95 765
+	getColor #color1 95 764
 	if #color1 == #colorWhite
-		#tryWithDelay = 0
-	
 		#loopDetectionCount = 0
+		#tryWithDelay = 0
 		#time = #time + 2000
 		
 		//scroll up
@@ -1182,11 +1215,13 @@ goto :levelHeroes
 :scrollTop
 	#loopDetectionCount = #loopDetectionCount + 1
 	if #loopDetectionCount > 20
+		toast scrollTop loop
 		goto :loopDetected
 	endif
 
-	getColor #color1 475 510
+	getColor #color1 300 510
 	if #color1 == #colorGray
+		#loopDetectionCount = 0
 		sleep 400
 		#time = #time + 400
 		
@@ -1202,7 +1237,7 @@ goto :levelHeroes
 		touchUp 0
 		sleep 600
 		#time = #time + 950
-		
+
 		goto :lvlTopHero
 	endif
 
@@ -1243,18 +1278,16 @@ goto :scrollTop
 	sleep #btnDelay
 	#time = #time + #btnDelay * 4
 	
-	//skip leveling other heroes at these times
-	
+	//since skills should have been maxed, it wont go to openSwordMasterTab after
 	if #unlocked >= 8 or #maxedOutSkills > 1
 		#actionStepper = #actionStepper + 1
-		//since skills should have been maxed, it wont level them up anymore
 	endif
 	
 	if #minutes >= 3 and #justUnlockSkills == 0
 		#actionStepper = #actionStepper + 1
-		//since skills should have been maxed, it wont level them up anymore
 	endif
 	
+	//level only top hero at this time
 	if #minutes >= 100
 		goto :levelHeroesPressLevelUp
 	endif
@@ -1285,6 +1318,7 @@ goto :levelHeroesScrollDown
 :levelHeroesScrollDown
 	#loopDetectionCount = #loopDetectionCount + 1
 	if #loopDetectionCount == 25
+		toast levelHeroesScrollDown loop
 		goto :loopDetected
 	endif
 
@@ -1375,11 +1409,13 @@ goto :levelHeroesPressLevelUp
 :levelHeroesSlideUpCollection
 	#loopDetectionCount = #loopDetectionCount + 1
 	if #loopDetectionCount == 25
+		toast levelHeroesSlideUpCollection loop
 		goto :loopDetected
 	endif
 
-	getColor #color1 475 510
+	getColor #color1 300 510
 	if #color1 == #colorGray
+		#loopDetectionCount = 0
 		goto :closeMenu
 	endif
 	
@@ -1517,8 +1553,11 @@ goto :runActions
 		touchUp 0
 		sleep #btnDelay
 		#time = #time + #btnDelay
-	// hatchEggs
+	//hatchEggs
+		toast hatching
 		touchPress 0 30 285
+		sleep 25
+		touchUp 0
 		sleep #btnDelay
 		#time = #time + #btnDelay
 	endif	
@@ -1613,7 +1652,7 @@ goto :pressSkills
 		touchUp 0
 	endif
 	
-	if #hitCount > 19
+	if #hitCount > 30
 		#hitCount = 0
 		if #PHoM == 1
 			touchDown 0 283 377
