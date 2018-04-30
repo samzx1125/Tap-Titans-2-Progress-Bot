@@ -1,7 +1,8 @@
 // -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1]
 // edited by djo5296 '17-12-30
-// chrisreyn SC April 30 2018
+// chrisreyn SC Mana Siphon April 30 2018
 // thanks to tommy8208 for testing
+// code and suggestions from atereshkov, GitGud2018
 SCREEN_SIZE: 480x800
 
 // ---------- Click Areas
@@ -49,6 +50,8 @@ var #clanQuestRunsPerReadyUp 1
 // ---------- Actions ---------- [ Heroes ]
 var #enableHeroes 1
 var #heroIntensity 2
+var #topHeroes 0
+//level top hero every X seconds, leave at 0 to disable
 // ---------- Actions ---------- [ Skills ]
 var #enableSkills 1
 
@@ -94,6 +97,8 @@ var #justUnlockSkills 0
 
 //only applicable when #justUnlockSkills == 1
 var #maxSkillsAtXMinutes 34
+
+var #stopLevelSkillMins 3
 
 // extra variables I use in my code
 calc #maxSkillsAtXMinutesA #maxSkillsAtXMinutes - 1
@@ -194,6 +199,7 @@ var #lastPressFS 0
 var #lastPressHoM 0
 var #lastPressSC 0
 var #lastPressWC 0
+var #lastTopHeroes 0
 var #resultManaPool 0
 var #resultCheckBoss 0
 var #resultUpdateTime 0
@@ -463,6 +469,59 @@ goto :runActions
 		#time = #time + 50
 	endif
 
+if #topHeroes > 0
+	#timeDiff = #secondsTotal - #lastTopHeroes
+		if #timeDiff >= #topHeroes 
+			#lastTopHeroes = #secondsTotal
+			sleep 100
+			//open stats
+			sleep #btnDelay
+			#time = #time + #btnDelay + 100
+			touchDown 0 #menuHeroes #menuY
+			sleep #btnDelay
+			touchUp 0
+			sleep 1000
+			#time = #time + 1000 + #btnDelay
+			
+			//wait for slide
+			sleep #menuSlideDelay
+			#time = #time + #menuSlideDelay
+			
+			//slide top
+			touchDown 0 280 650
+			sleep 200
+			touchMove 0 280 600
+			sleep 50
+			touchMove 0 280 700
+			sleep 50
+			touchMove 0 280 750
+			sleep 50
+			touchMove 0 280 780
+			sleep 50
+			touchUp 0
+			sleep 750
+			sleep #btnDelay
+			#time = #time + #btnDelay + 1150
+			
+			//level top heroes
+			touchPress 0 410 580
+			sleep #btnDelay
+			touchPress 0 410 650
+			sleep #btnDelay
+			touchPress 0 410 730
+			sleep #btnDelay
+			#time = #time + #btnDelay * 3
+			
+			//close stats
+			sleep #btnDelay
+			#time = #time + #btnDelay
+			touchPress 0 #menuCloseX #menuCloseY
+			touchPress 0 #menuCloseX #menuCloseY
+			touchPress 0 #menuCloseX #menuCloseY
+			sleep #menuSlideDelay
+			#time = #time + #menuSlideDelay
+		endif
+	endif
 goto :start
 // ---------- CHECK MANA
 
@@ -1283,7 +1342,7 @@ goto :scrollTop
 		#actionStepper = #actionStepper + 1
 	endif
 	
-	if #minutes >= 3 and #justUnlockSkills == 0
+	if #minutes >= #stopLevelSkillMins and #justUnlockSkills == 0
 		#actionStepper = #actionStepper + 1
 	endif
 	
@@ -1452,47 +1511,47 @@ goto :levelHeroesPressLevelUp
 	#pressLevelUpLoopCount = #pressLevelUpLoopCount + 1
 	
 	touchDown 1 466 720
-	sleep 21
+	sleep 25
 	touchUp 1
-	sleep 21
+	sleep 25
 	touchDown 1 466 700
-	sleep 21
+	sleep 25
 	touchUp 1
-	sleep 21
+	sleep 25
 	touchDown 1 466 680
-	sleep 21
+	sleep 25
 	touchUp 1
-	sleep 21
+	sleep 25
 	touchDown 1 466 660
-	sleep 21
+	sleep 25
 	touchUp 1
-	sleep 21
+	sleep 25
 	touchDown 1 466 640
-	sleep 21
+	sleep 25
 	touchUp 1
-	sleep 21
+	sleep 25
 	touchDown 1 466 620
-	sleep 21
+	sleep 25
 	touchUp 1
-	sleep 21
+	sleep 25
 	touchDown 1 466 600
-	sleep 21
+	sleep 25
 	touchUp 1
-	sleep 21
+	sleep 25
 	touchDown 1 466 580
-	sleep 21
+	sleep 25
 	touchUp 1
-	sleep 21
+	sleep 25
 	touchDown 1 466 560
-	sleep 21
+	sleep 25
 	touchUp 1
-	sleep 21
+	sleep 25
 	touchDown 1 466 540
-	sleep 21
+	sleep 25
 	touchUp 1
-	sleep 21
+	sleep 25
 
-	#time = #time + 420
+	#time = #time + 500
 	
 	if #pressLevelUpLoopCount < #heroIntensity
 		goto :levelHeroesPressLevelUp
@@ -1519,9 +1578,6 @@ goto :runActions
 	if #color1 == #colorWhite
 		goto :pressSkills
 	endif
-
-	#color1 = 0
-	#color2 = 0
 	
 	getColor #color2 459 29
 		
@@ -1543,24 +1599,21 @@ goto :runActions
 		toast FightBoss2
 		touchDown 0 390 36
 		sleep #btnDelay
-		#time = #time + #btnDelay
 		touchUp 0
 		sleep #btnDelay
-		#time = #time + #btnDelay
 		touchDown 0 390 36
 		sleep #btnDelay
-		#time = #time + #btnDelay
 		touchUp 0
 		sleep #btnDelay
-		#time = #time + #btnDelay
+		#time = #time + 4* #btnDelay
+	endif
+	
 	//hatchEggs
-		toast hatching
-		touchPress 0 30 285
-		sleep 25
-		touchUp 0
-		sleep #btnDelay
-		#time = #time + #btnDelay
-	endif	
+	touchPress 0 30 285
+	sleep 25
+	touchUp 0
+	sleep #btnDelay
+	#time = #time + #btnDelay
 goto :pressSkills
 
 :startBossWithSkills
