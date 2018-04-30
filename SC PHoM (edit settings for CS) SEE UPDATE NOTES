@@ -796,13 +796,14 @@ goto :closeMenu
 
 	#skillCheckStepper = #skillCheckStepper + 1
 	
-	if #skillCheckStepper == 1 and #maxedOutSkills == 1
+	if #skillCheckStepper == 1 and #maxedOutSkills > 0
 		#skillCheckStepper = #skillCheckStepper + 1
 	endif
 	
-	if #skillCheckStepper == 1 or #skillCheckStepper == 6
+	if #skillCheckStepper == 1
+		goto :maxHS
+	elseif #skillCheckStepper == 6
 		goto :maxSkill
-		
 	elseif #skillCheckStepper < 6
 		goto :checkSkillsUnlock
 	endif
@@ -868,78 +869,60 @@ goto :endLvlSkill
 	else
 		goto :checkSkillsSlideDown
 	endif
+
+:maxHS
+	#loopBreak = #loopBreak + 1
+	if #loopBreak > 15
+		#loopBreak = 0		
+		goto :endLvlSkill
+	endif
 	
+	getColor #skillAvailable 460 691
+	if #skillAvailable >= -7963574 and #skillAvailable <= -7034609
+		#loopBreak = 0
+		goto :endLvlSkill
+	endif
+	
+	touchPress 0 405 680
+	sleep 34
+	touchPress 0 405 680
+	touchPress 0 405 680
+	touchPress 0 405 680
+	sleep 45
+	touchPress 0 405 680
+	sleep 38
+	#time = #time + 115
+goto :maxHS	
+
 :maxSkill
 	sleep 70
 	#time = #time + 70
 	
 	#loopBreak = #loopBreak + 1
-
-	if #loopBreak > 30
+	if #loopBreak > 15
 		#loopBreak = 0
-		
-		//slide top
-		touchDown 0 280 650
-		sleep 200
-		touchMove 0 280 600
-		sleep 50
-		touchMove 0 280 700
-		sleep 50
-		touchMove 0 280 750
-		sleep 50
-		touchMove 0 280 780
-		sleep 50
-		touchUp 0
-		sleep 750
-		#time = #time + 1150
-		
-		goto :checkSkills
+		goto :endLvlSkill
 	endif
 	
-	if #skillCheckStepper == 1
-		getColor #skillAvailable 460 691
-	elseif #skillCheckStepper > 1
-		getRGB #colorRed #colorGreen #colorBlue 459 755
-	endif
+	getRGB #colorRed #colorGreen #colorBlue 459 755
 	
 	sleep 50
 	#time = #time + 50
 	
-	if #skillCheckStepper >= 2
-		if #colorRed < -100 or #colorGreen < -100 or #colorBlue <= -40
-			#loopBreak = 0
-			goto :endLvlSkill
-		endif
-		touchPress 0 415 750
-		sleep 34
-		touchPress 0 415 750
-		touchPress 0 415 750
-		touchPress 0 415 750
-		sleep 45
-		touchPress 0 415 750
-		sleep 38
-		#time = #time + 115
+	if #colorRed < -100 or #colorGreen < -100 or #colorBlue <= -40
+		#loopBreak = 0
+		goto :endLvlSkill
 	endif
 	
-	if #skillCheckStepper <= 1
-		if #skillAvailable >= -7963574 and #skillAvailable <= -7034609
-			#loopBreak = 0
-			goto :checkSkills
-		endif
-		touchPress 0 405 680
-		sleep 34
-		touchPress 0 405 680
-		touchPress 0 405 680
-		touchPress 0 405 680
-		sleep 45
-		touchPress 0 405 680
-		sleep 38
-		#time = #time + 115
-	
-	endif
-		
-	sleep 100
-	#time = #time + 100
+	touchPress 0 415 750
+	sleep 34
+	touchPress 0 415 750
+	touchPress 0 415 750
+	touchPress 0 415 750
+	sleep 45
+	touchPress 0 415 750
+	sleep 38
+	#time = #time + 115
 goto :maxSkill
 
 :checkSkillsUnlock
@@ -1198,7 +1181,7 @@ goto :levelHeroes
 
 :scrollTop
 	#loopDetectionCount = #loopDetectionCount + 1
-	if #loopDetectionCount == 25
+	if #loopDetectionCount > 20
 		goto :loopDetected
 	endif
 
