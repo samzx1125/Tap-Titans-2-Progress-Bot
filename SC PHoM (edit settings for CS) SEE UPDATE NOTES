@@ -1,6 +1,6 @@
 // -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1]
 // edited by djo5296 '17-12-30
-// chrisreyn SC Mana Siphon April 30 2018
+// chrisreyn SC Mana Siphon May 03 2018
 // thanks to tommy8208 for testing
 // code and suggestions from atereshkov, GitGud2018
 SCREEN_SIZE: 480x800
@@ -13,7 +13,7 @@ var #decline 0
 
 var #enableClanShip 1
 var #PHoM 1
-var #manaTournament 1
+var #manaTournament 0
 
 var #enableTapping 1
 // 1 = (default) hit the titans with your sword master
@@ -1511,47 +1511,47 @@ goto :levelHeroesPressLevelUp
 	#pressLevelUpLoopCount = #pressLevelUpLoopCount + 1
 	
 	touchDown 1 466 720
-	sleep 25
+	sleep 30
 	touchUp 1
-	sleep 25
+	sleep 30
 	touchDown 1 466 700
-	sleep 25
+	sleep 30
 	touchUp 1
-	sleep 25
+	sleep 30
 	touchDown 1 466 680
-	sleep 25
+	sleep 30
 	touchUp 1
-	sleep 25
+	sleep 30
 	touchDown 1 466 660
-	sleep 25
+	sleep 30
 	touchUp 1
-	sleep 25
+	sleep 30
 	touchDown 1 466 640
-	sleep 25
+	sleep 30
 	touchUp 1
-	sleep 25
+	sleep 30
 	touchDown 1 466 620
-	sleep 25
+	sleep 30
 	touchUp 1
-	sleep 25
+	sleep 30
 	touchDown 1 466 600
-	sleep 25
+	sleep 30
 	touchUp 1
-	sleep 25
+	sleep 30
 	touchDown 1 466 580
-	sleep 25
+	sleep 30
 	touchUp 1
-	sleep 25
+	sleep 30
 	touchDown 1 466 560
-	sleep 25
+	sleep 30
 	touchUp 1
-	sleep 25
+	sleep 30
 	touchDown 1 466 540
-	sleep 25
+	sleep 30
 	touchUp 1
-	sleep 25
+	sleep 30
 
-	#time = #time + 500
+	#time = #time + 600
 	
 	if #pressLevelUpLoopCount < #heroIntensity
 		goto :levelHeroesPressLevelUp
