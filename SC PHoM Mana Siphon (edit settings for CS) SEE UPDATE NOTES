@@ -99,6 +99,7 @@ var #justUnlockSkills 0
 // see Tune389 Issue 80 if using #justUnlockSkills 1
 
 //only applicable when #justUnlockSkills == 1
+// use 0 if you don't like
 var #maxSkillsAtXMinutes 34
 
 var #stopLevelSkillMins 3
@@ -294,7 +295,6 @@ var #resultClanQuest 0
 	#runActionsEveryXSeconds = #rAEXS
 	#maxedOutSkills = 0
 	#prestigeSlide = 0
-	#manualMax = 0
 	#startSkillCheckNow = 1
 	
 	#intervalHS = #iHS
@@ -911,12 +911,6 @@ goto :closeMenu
 goto :checkSkillsB
 	
 :checkSkillsB
-	if #manualMax < 11
-		goto :checkSkillsB
-	else
-		goto :checkSkillsC
-	endif
-
 	#manualMax = #manualMax + 1
 	
 	if #skillCheckStepper > 1 and #maxedOutSkills < 1 and #justUnlockSkills == 0
@@ -929,6 +923,13 @@ goto :checkSkillsB
 		touchPress 0 415 750
 		sleep 38
 		#time = #time + 115
+	endif
+	
+	if #manualMax < 11
+		goto :checkSkillsB
+	else
+		#manualMax = 0
+		goto :checkSkillsC
 	endif
 	
 :checkSkillsC
@@ -964,7 +965,7 @@ goto :checkSkillsB
 goto :checkSkillsFinish
 
 :lvlSkill
-	if #minutes >= #maxSkillsAtXMinutes and #unlocked < 8 and #skillCheckStepper <= 5
+	if #minutes >= #maxSkillsAtXMinutes and #maxSkillsAtXMinutes > 0 and #unlocked < 8 and #skillCheckStepper <= 5
 		touchPress 0 459 755
 		sleep 300
 		#time = #time + 300
