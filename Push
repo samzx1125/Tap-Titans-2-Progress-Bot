@@ -1,0 +1,529 @@
+// -  Tap Titans 2 RandomClicker by Tune389 [ v1 ]
+// edited by djo5296 '17-12-23 v2
+// chrisreyn Push May 22 2018
+
+//THIS SCRIPT HAS NO CQ, NO PRESTIGE, NO SKILL LEVEL UP (just activate), ONLY RECENT HERO LEVEL UP
+
+SCREEN_SIZE: 480x800
+
+var #startX 60
+var #endX 415
+var #endY 420
+
+// ----------- Settings
+var #startY 160
+// use 160 if w/ faries
+// use 270 if no faries
+
+var #PHoM 1
+var #equipmentStacking 1
+var #agree 1
+var #decline 0
+// agree = 1 if you want to auto accept fairy ads; aka skippable fairy ads
+// decline = 1 if you cannot turn off fairy ads but want to click on all fairies
+// you can leave both at 0 if you turn off fairy ads (change #startY if so)
+// do not make both agree and decline = 1 hahaha
+
+// ----------- Heroes
+
+var #levelUpToggle 1
+var #heroIntensity 2
+var #startHeroLevelUpNow 0
+
+// ----------- Skills
+var #astralAwakening 1
+
+var #skillToggle 1
+
+var #HS 0
+var #DS 1
+var #HoM 1
+var #FS 1
+var #WC 1
+var #SC 1
+
+// ----------- Vars
+
+var #randomX 0
+var #randomY 0
+var #menuY 780
+var #menuSlideDelay 200
+var #menuStats 15
+var #menuHeroes 120
+var #menuCloseY 455
+var #menuCloseX 466
+var #delay 20
+var #btnDelay 150
+var #skillDelay 50
+
+var #hero 0
+var #hitCount 0
+var #extraCount 0
+var #skillCount 0
+var #levelCount 0
+var #pressLevelUpLoopCount 0
+var #loopDetectionCount 0
+
+var #color1 0
+var #color2 0
+var #colorGray 2695200
+if #startHeroLevelUpNow == 1
+	#hitCount = 1199
+endif
+
+// ----------- Hero Coordinates
+
+
+// ----------- RANDOM ATTACK
+:start
+	rand #randomX #startX #endX
+	rand #randomY #startY #endY
+	
+	//equipment stacking
+	if #randomX > 280 and #randomX < 440 and #randomY > 280 and #equipmentStacking == 1
+		goto :start
+	endif
+	
+	//prevent hero story window
+	if #randomY > 184 and #randomY < 233 and #randomX > 403
+		goto :randomTouch
+	endif
+	
+	touchDown 0 #randomX #randomY
+	touchUp 0
+	
+	sleep #delay
+	
+	if #astralAwakening == 1
+		#hero = #hero + 1
+		
+		if #equipmentStacking == 1
+			if #hero == 1 or #hero == 3 or #hero == 6 or #hero == 11 or #hero == 14 or #hero == 19 or #hero == 22
+				#hero = #hero + 1
+			endif
+		endif
+		
+		if #hero == 1
+			touchDown 0 350 400
+			touchUp 0
+		elseif #hero == 2
+			touchDown 0 135 400
+			touchUp 0
+		elseif #hero == 3
+			touchDown 0 435 390
+			touchUp 0
+		elseif #hero == 4
+			touchDown 0 100 395
+			touchUp 0
+		elseif #hero == 5
+			touchDown 0 100 315
+			touchUp 0
+		elseif #hero == 6
+			touchDown 0 400 305
+			touchUp 0
+		elseif #hero == 7
+			touchDown 0 55 275
+			touchUp 0
+		elseif #hero == 8
+			touchDown 0 455 305
+			touchUp 0
+		elseif #hero == 9
+			touchDown 0 35 305
+			touchUp 0
+		elseif #hero == 10
+			touchDown 0 50 375
+			touchUp 0
+		elseif #hero == 11
+			touchDown 0 400 400
+			touchUp 0
+		elseif #hero == 12
+			touchDown 0 10 305
+			touchUp 0
+		elseif #hero == 13
+			touchDown 0 75 410
+			touchUp 0
+		elseif #hero == 14
+			touchDown 0 425 305
+			touchUp 0
+		elseif #hero == 15
+			touchDown 0 400 225
+			touchUp 0
+		elseif #hero == 16
+			touchDown 0 465 410
+			touchUp 0
+		elseif #hero == 17
+			touchDown 0 20 380
+			touchUp 0
+		elseif #hero == 18
+			touchDown 0 15 210
+			touchUp 0
+		elseif #hero == 19
+			touchDown 0 380 365
+			touchUp 0
+		elseif #hero == 20
+			touchDown 0 445 205
+			touchUp 0
+		elseif #hero == 21
+			touchDown 0 50 225
+			touchUp 0
+		elseif #hero == 22
+			touchDown 0 375 305
+			touchUp 0
+		elseif #hero == 23
+			touchDown 0 470 225
+			touchUp 0
+		elseif #hero == 24
+			touchDown 0 80 225
+			touchUp 0
+		elseif #hero == 25
+			touchDown 0 75 305
+			touchUp 0
+		elseif #hero == 26
+			touchDown 0 445 170
+			touchUp 0
+		elseif #hero == 27
+			touchDown 0 415 170
+			touchUp 0
+		elseif #hero == 28
+			touchDown 0 370 170
+			touchUp 0
+		elseif #hero == 29
+			touchDown 0 95 190
+			touchUp 0
+		elseif #hero == 30
+			touchDown 0 30 180
+			touchUp 0
+		elseif #hero == 31
+			touchDown 0 425 225
+			touchUp 0
+		elseif #hero == 32
+			touchDown 0 465 120
+			touchUp 0
+		elseif #hero == 33
+			touchDown 0 385 135
+			touchUp 0
+		elseif #hero == 34
+			touchDown 0 80 130
+			touchUp 0
+		elseif #hero == 35
+			touchDown 0 465 125
+			touchUp 0
+		elseif #hero == 36
+			touchDown 0 115 140
+			touchUp 0
+		elseif #hero == 37
+			touchDown 0 420 80
+			touchUp 0
+		endif		
+		
+		sleep #delay
+		
+		if #hero > 36
+			#hero = 0
+		endif
+	endif
+	
+	#hitCount = #hitCount + 1
+	#extraCount = #hitCount % 12
+	#skillCount = #hitCount % 72
+	#levelCount = #hitCount % 1200
+	
+	if #levelCount == 0
+		#hitCount = 0
+		goto :levelUp
+	endif
+	
+	if #skillCount == 0
+		goto :skills
+	endif
+	
+	if #extraCount == 0
+		goto :extra
+	endif
+goto :start
+
+:extra
+	if #PHoM == 1
+		touchDown 0 283 377
+		sleep 12
+		touchUp 0
+		sleep 14
+		touchPress 0 283 377
+		sleep 2
+		touchUp
+		sleep 3
+		touchPress 0 283 377
+		sleep 16
+		touchUp 0
+		sleep 18
+		touchDown 0 283 377
+		sleep 10
+		touchUp 0
+		sleep 18
+	endif
+
+	if #agree == 1
+		touchDown 0 300 630
+		sleep 20
+		touchUp 0
+		sleep 20
+		touchDown 0 300 630
+		sleep 20
+		touchUp 0
+		sleep 20
+	endif
+
+	if #decline == 1
+		touchDown 0 200 630
+		sleep 30
+		touchUp 0
+		sleep 30
+		touchDown 0 200 630
+		sleep 30
+		touchUp 0
+		sleep 30
+	endif
+goto :start
+
+:skills
+	if #skillToggle == 0
+		goto :extra
+	endif
+	
+	if #SC == 1
+		touchPress 0 430 710
+		sleep #skillDelay
+		touchPress 0 430 710
+		sleep #skillDelay
+	endif
+	
+	if #HoM == 1
+		touchPress 0 200 710
+		sleep #skillDelay
+	endif
+	
+	if #DS == 1
+		touchPress 0 120 710
+		sleep #skillDelay
+	endif
+	
+	if #WC == 1
+		touchPress 0 360 710
+		sleep #skillDelay
+	endif
+	
+	if #FS == 1
+		touchPress 0 280 710
+		sleep #skillDelay
+	endif
+	
+	if #HS == 1
+		touchPress 0 40 710
+		sleep #skillDelay
+	endif
+goto :extra
+
+:levelUp
+	#hitCount = 0
+	
+	if #levelUpToggle == 0
+		goto :skills
+	endif
+	
+	sleep 3000
+	
+	if #agree == 1
+		touchPress 300 630
+		sleep #btnDelay
+		touchPress 300 630
+		sleep #btnDelay
+		touchPress 300 630
+		sleep #btnDelay
+	endif
+	
+	if #decline == 1
+		touchPress 200 630
+		sleep #btnDelay
+		touchPress 200 630
+		sleep #btnDelay
+		touchPress 200 630
+		sleep #btnDelay
+	endif
+	
+	//open stats
+	sleep #btnDelay
+	touchDown 0 #menuHeroes #menuY
+	sleep #btnDelay
+	touchUp 0
+	sleep 1000
+	
+	//wait for slide
+	sleep #menuSlideDelay
+	
+	//slide top
+	touchDown 0 280 650
+	sleep 200
+	touchMove 0 280 600
+	sleep 50
+	touchMove 0 280 700
+	sleep 50
+	touchMove 0 280 750
+	sleep 50
+	touchMove 0 280 780
+	sleep 50
+	touchUp 0
+	sleep 750
+	sleep #btnDelay
+	//slide top
+	touchDown 0 280 650
+	sleep 200
+	touchMove 0 280 600
+	sleep 50
+	touchMove 0 280 700
+	sleep 50
+	touchMove 0 280 750
+	sleep 50
+	touchMove 0 280 780
+	sleep 50
+	touchUp 0
+	sleep 750
+	sleep #btnDelay
+	//slide top
+	touchDown 0 280 650
+	sleep 200
+	touchMove 0 280 600
+	sleep 50
+	touchMove 0 280 700
+	sleep 50
+	touchMove 0 280 750
+	sleep 50
+	touchMove 0 280 780
+	sleep 50
+	touchUp 0
+	sleep 750
+	sleep #btnDelay
+	
+	touchPress 0 460 670
+	sleep #btnDelay
+	touchPress 0 460 670
+	sleep #btnDelay
+	touchPress 0 460 670
+	sleep #btnDelay
+	touchPress 0 460 670
+	sleep #btnDelay
+	
+	//slide down
+	touchDown 1 280 740
+	sleep 200
+	touchMove 1 280 710
+	sleep 50
+	touchMove 1 280 500
+	sleep 50
+	touchMove 1 280 410
+	sleep 50
+	touchMove 1 280 400
+	touchUp 1
+	sleep 300
+goto :levelHeroesPressLevelUp
+	
+:levelHeroesPressLevelUp
+	#pressLevelUpLoopCount = #pressLevelUpLoopCount + 1
+	
+	touchDown 1 466 720
+	sleep 40
+	touchUp 1
+	sleep 40
+	touchDown 1 466 700
+	sleep 40
+	touchUp 1
+	sleep 40
+	touchDown 1 466 680
+	sleep 40
+	touchUp 1
+	sleep 40
+	touchDown 1 466 660
+	sleep 40
+	touchUp 1
+	sleep 40
+	touchDown 1 466 640
+	sleep 40
+	touchUp 1
+	sleep 40
+	touchDown 1 466 620
+	sleep 40
+	touchUp 1
+	sleep 40
+	touchDown 1 466 600
+	sleep 40
+	touchUp 1
+	sleep 40
+	touchDown 1 466 580
+	sleep 40
+	touchUp 1
+	sleep 40
+	touchDown 1 466 560
+	sleep 40
+	touchUp 1
+	sleep 40
+	touchDown 1 466 540
+	sleep 40
+	touchUp 1
+	sleep 40
+	
+	if #pressLevelUpLoopCount < #heroIntensity
+		goto :levelHeroesPressLevelUp
+	endif
+	
+	#pressLevelUpLoopCount = 0
+goto :levelHeroesSlideUpCollection
+
+:levelHeroesSlideUpCollection
+	#loopDetectionCount = #loopDetectionCount + 1
+	if #loopDetectionCount > 10
+		toast levelHeroesSlideUpCollection loop
+		goto :closeMenu
+	endif
+	
+	touchDown 1 280 510
+	sleep 20
+	touchMove 1 280 512
+	touchMove 1 280 514
+	touchMove 1 280 516
+	sleep 20
+	touchMove 1 280 520
+	touchMove 1 280 540
+	sleep 20
+	touchMove 1 280 580
+	touchMove 1 280 600
+	sleep 20
+	touchMove 1 280 630
+	touchMove 1 280 670
+	sleep 20
+	touchMove 1 280 690
+	touchMove 1 280 700
+	sleep 20
+	touchMove 1 280 736
+	touchMove 1 280 738
+	sleep 20
+	touchMove 1 280 740
+	touchMove 1 280 742
+	sleep 200
+	touchUp 1
+	touchPress 1 280 750
+	
+	getColor #color1 275 527
+	getColor #color2 275 508
+	if #color1 == #colorGray and #color2 == #colorGray
+		#loopDetectionCount = 0
+		goto :closeMenu
+	endif
+goto :levelHeroesPressLevelUp
+
+:closeMenu
+	//close stats
+	sleep #btnDelay
+	touchPress 0 #menuCloseX #menuCloseY
+	touchPress 0 #menuCloseX #menuCloseY
+	touchPress 0 #menuCloseX #menuCloseY
+	sleep #menuSlideDelay
+goto :skills
