@@ -1,6 +1,6 @@
 // -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1]
 // edited by djo5296 '17-12-30
-// chrisreyn SC Mana Siphon May 21 2018
+// chrisreyn SC Mana Siphon May 22 2018
 // thanks to tommy8208 for testing
 // code and suggestions from atereshkov, GitGud2018
 SCREEN_SIZE: 480x800
@@ -11,15 +11,17 @@ var #enablePremiumCollect 1
 var #agree 1
 var #decline 0
 
-var #enableClanShip 1
-var #PHoM 1
-var #manaTournament 0
-
 var #enableTapping 1
 // 1 = (default) hit the titans with your sword master
 // 0 = disable hits (except on CQ)
 
+var #enableClanShip 1
+var #PHoM 1
+var #astralAwakening 1
+// #astralAwakening is also affected by #equipStack
+
 var #equipStack 1
+// will skip some heroes when tapping for Astral Awakening
 // ---------- Actions ---------- [ Prestige ]
 var #enableAutoprestige 1
 
@@ -79,11 +81,11 @@ var #unlocked 0
 //time dependent variable changes in :start will still apply, be sure to check :start section
 if #lateRun > 0
 	#intervalHS = 0
-	#intervalDS = 10
-	#intervalFS = 30
-	#intervalHoM = 10
-	#intervalWC = 10
-	#intervalSC = 10
+	#intervalDS = 11
+	#intervalFS = 31
+	#intervalHoM = 11
+	#intervalWC = 11
+	#intervalSC = 11
 	if #lateRun > #maxSkillsAtXMinutes 
 		#unlocked = 8
 	else
@@ -168,13 +170,17 @@ if #lateRun > 0
 endif
 var #prestigeSlide 0
 var #manualMax 0
+var #hero 0
+var #scActiveCheck 0
 // ---------- Delays
 var #btnDelay 150
 var #hitDelay 40
+var #hitDelay2 20
 var #menuSlideDelay 200
 var #menuPopUpDelay 500
 var #loadingClanQuestDelay 3000
 var #shipDelay 200
+var #skillDelay 50
 // ---------- Menu Coords
 var #menuY 780
 var #menuStats 15
@@ -248,7 +254,7 @@ var #resultClanQuest 0
 		sleep 30
 		touchUp 0
 		sleep 30
-		#time = #time + 50
+		#time = #time + 60
 	endif
 	
 	if #resultUpdateTime == 0 and #enablePremiumCollect == 1 and #decline == 1
@@ -256,7 +262,7 @@ var #resultClanQuest 0
 		sleep 30
 		touchUp 0
 		sleep 30
-		#time = #time + 50
+		#time = #time + 60
 	endif
 	if #resultUpdateTime == 0 and #timeDiff < #runActionsEveryXSeconds
 		goto :pressSkills
@@ -366,10 +372,10 @@ goto :start
 	endif
 	
 	touchDown 0 #menuCloseX #menuCloseY
-	sleep 30
+	sleep 40
 	touchUp 0
 	sleep #menuSlideDelay
-	#time = #time + #menuSlideDelay + 30
+	#time = #time + #menuSlideDelay + 40
 
 	if #enableClanShip == 1
 		touchPress 0 65 100
@@ -387,94 +393,99 @@ goto :start
 	if #timeDiff >= #intervalSC and #intervalSC > 0
 		#lastPressSC = #secondsTotal
 		touchPress 0 430 710
-		sleep 15
-		touchUp 0
-		sleep 10
+		sleep #skillDelay
 		touchPress 0 430 710
-		sleep 15
-		touchUp 0
-		sleep 10
-		#time = #time + 50
-	endif
-	
-	if #manaTournament == 1
-		#colorRed = -1
-		#colorBlue = 0
-	else
-		if #minutes < 16
-			#colorRed = -1
-			#colorBlue = 0
-		else
-			getRGB #colorRed #colorGreen #colorBlue 410 705
-			#time = #time + 100
-		endif
+		sleep #skillDelay
+		#time = #time + #skillDelay
 	endif
 	
 	#timeDiff = #secondsTotal - #lastPressHoM
-	if #timeDiff >= #intervalHoM and #intervalHoM > 0 and #colorRed == -1 and #colorBlue == 0
-		#lastPressHoM = #secondsTotal
-		touchPress 0 200 710
-		sleep 15
-		touchUp 0
-		sleep 10
-		touchPress 0 200 710
-		sleep 15
-		touchUp 0
-		sleep 10
-		#time = #time + 50
+	if #timeDiff >= #intervalHoM and #intervalHoM > 0
+		if #scActiveCheck == 0
+			#scActiveCheck = 1
+			getRGB #colorRed #colorGreen #colorBlue 410 705
+			#time = #time + 100
+		endif
+		
+		if #colorRed == -1 and #colorBlue == 0
+			#lastPressHoM = #secondsTotal
+			touchPress 0 200 710
+			sleep #skillDelay
+			touchPress 0 200 710
+			sleep #skillDelay
+			#time = #time + #skillDelay * 2
+		endif
 	endif
 	#timeDiff = #secondsTotal - #lastPressDS
-	if #timeDiff >= #intervalDS and #intervalDS > 0 and #colorRed == -1 and #colorBlue == 0
-		#lastPressDS = #secondsTotal
-		touchPress 0 120 710
-		sleep 15
-		touchUp 0
-		sleep 10
-		touchPress 0 120 710
-		sleep 15
-		touchUp 0
-		sleep 10
-		#time = #time + 50
+	if #timeDiff >= #intervalDS and #intervalDS > 0
+		if #scActiveCheck == 0
+			#scActiveCheck = 1
+			getRGB #colorRed #colorGreen #colorBlue 410 705
+			#time = #time + 100
+		endif
+		
+		if #colorRed == -1 and #colorBlue == 0
+			#lastPressDS = #secondsTotal
+			touchPress 0 120 710
+			sleep #skillDelay
+			touchPress 0 120 710
+			sleep #skillDelay
+			#time = #time + #skillDelay * 2
+		endif
 	endif
 	#timeDiff = #secondsTotal - #lastPressWC
-	if #timeDiff >= #intervalWC and #intervalWC > 0 and #colorRed == -1 and #colorBlue == 0
-		#lastPressWC = #secondsTotal
-		touchPress 0 360 710
-		sleep 15
-		touchUp 0
-		sleep 10
-		touchPress 0 360 710
-		sleep 15
-		touchUp 0
-		sleep 10
-		#time = #time + 50
+	if #timeDiff >= #intervalWC and #intervalWC > 0
+		if #scActiveCheck == 0
+			#scActiveCheck = 1
+			getRGB #colorRed #colorGreen #colorBlue 410 705
+			#time = #time + 100
+		endif
+		
+		if #colorRed == -1 and #colorBlue == 0
+			#lastPressWC = #secondsTotal
+			touchPress 0 360 710
+			sleep #skillDelay
+			touchPress 0 360 710
+			sleep #skillDelay
+			#time = #time + #skillDelay * 2
+		endif
 	endif
 	#timeDiff = #secondsTotal - #lastPressFS
-	if #timeDiff >= #intervalFS and #intervalFS > 0 and #colorRed == -1 and #colorBlue == 0
-		#lastPressFS = #secondsTotal
-		touchPress 0 280 710
-		sleep 15
-		touchUp 0
-		sleep 10
-		touchPress 0 280 710
-		sleep 15
-		touchUp 0
-		sleep 10
-		#time = #time + 50
+	if #timeDiff >= #intervalFS and #intervalFS > 0
+		if #scActiveCheck == 0
+			#scActiveCheck = 1
+			getRGB #colorRed #colorGreen #colorBlue 410 705
+			#time = #time + 100
+		endif
+		
+		if #colorRed == -1 and #colorBlue == 0
+			#lastPressFS = #secondsTotal
+			touchPress 0 280 710
+			sleep #skillDelay
+			touchPress 0 280 710
+			sleep #skillDelay
+			#time = #time + #skillDelay * 2
+		endif
 	endif
 	#timeDiff = #secondsTotal - #lastPressHS
-	if #timeDiff >= #intervalHS and #intervalHS > 0 and #colorRed == -1 and #colorBlue == 0
-		#lastPressHS = #secondsTotal
-		touchPress 0 40 710
-		sleep 15
-		touchUp 0
-		sleep 10
-		touchPress 0 40 710
-		sleep 15
-		touchUp 0
-		sleep 10
-		#time = #time + 50
+	if #timeDiff >= #intervalHS and #intervalHS > 0
+		if #scActiveCheck == 0
+			#scActiveCheck = 1
+			getRGB #colorRed #colorGreen #colorBlue 410 705
+			#time = #time + 100
+		endif
+		
+		if #colorRed == -1 and #colorBlue == 0
+			#lastPressHS = #secondsTotal
+			touchPress 0 40 710
+			sleep #skillDelay
+			touchPress 0 40 710
+			sleep #skillDelay
+			#time = #time + #skillDelay * 2
+		endif
 	endif
+	
+	#scActiveCheck = 0
 
 if #topHeroes > 0
 	#timeDiff = #secondsTotal - #lastTopHeroes
@@ -577,7 +588,7 @@ goto :runActions
 // ---------- CHECK PRESTIGE
 :checkPrestige
 	sleep 4000
-	#time = #time + 4000
+	//#time = #time + 4000
 	
 	if #agree == 1
 		touchDown 0 350 630
@@ -608,6 +619,19 @@ goto :runActions
 	//#time = #time + #menuSlideDelay
 	
 	//slide top
+	touchDown 0 280 650
+	sleep 200
+	touchMove 0 280 600
+	sleep 50
+	touchMove 0 280 700
+	sleep 50
+	touchMove 0 280 750
+	sleep 50
+	touchMove 0 280 780
+	sleep 50
+	touchUp 0
+	sleep 800
+	sleep #btnDelay
 	touchDown 0 280 650
 	sleep 200
 	touchMove 0 280 600
@@ -684,7 +708,7 @@ goto :checkPrestigeB
 		
 		//close stats
 		sleep #btnDelay
-		#time = #time + #btnDelay
+		//#time = #time + #btnDelay
 		touchPress 0 #menuCloseX #menuCloseY
 		touchPress 0 #menuCloseX #menuCloseY
 		touchPress 0 #menuCloseX #menuCloseY
@@ -699,13 +723,13 @@ goto :checkPrestigeB
 	touchUp 0
 	sleep 30
 	sleep #menuPopUpDelay
-	#time = #time + #menuPopUpDelay + 60
+	//#time = #time + #menuPopUpDelay + 60
 
 	touchDown 0 240 640
 	sleep #btnDelay
 	touchUp 0
 	sleep #menuPopUpDelay
-	sleep 80
+	sleep 120
 	getColor #color1 430 540
 	if #color1 == 6384245
 		touchDown 0 330 535
@@ -736,13 +760,7 @@ goto :start
 goto :start
 	
 :checkClanQuestReady
-	//open CQ menu
-	sleep #btnDelay
-	touchDown 0 80 30
-	sleep #btnDelay
-	touchUp 0
-	sleep #btnDelay
-	sleep 3000
+	sleep 4000
 	
 	if #agree == 1
 		getRGB #colorRed #colorGreen #colorBlue 428 639
@@ -759,9 +777,15 @@ goto :start
 			sleep 50
 			touchUp 0
 			sleep 1100
-			//goto :checkClanQuestReady
 		endif
 	endif
+
+	//open CQ menu
+	sleep #btnDelay
+	touchDown 0 80 25
+	sleep #btnDelay
+	touchUp 0
+	sleep #btnDelay + 250
 	
 	//touch clan icon bottom
 	touchDown 0 100 730
@@ -1379,9 +1403,10 @@ goto :levelHeroes
 	sleep 90
 	#time = #time + 90
 	
-	getColor #color1 249 515
+	getColor #color1 275 527
+	getColor #color2 275 508
 	//300 510
-	if #color1 == #colorGray
+	if #color1 == #colorGray and #color2 == #colorGray
 		#loopDetectionCount = 0
 		sleep 400
 		#time = #time + 400
@@ -1444,7 +1469,7 @@ goto :scrollTop
 		#actionStepper = #actionStepper + 1
 	endif
 	
-	if #minutes >= #stopLevelSkillMins and #justUnlockSkills == 0
+	if #justUnlockSkills == 0 and #minutes >= #stopLevelSkillMins
 		#actionStepper = #actionStepper + 1
 	endif
 	
@@ -1597,9 +1622,10 @@ goto :levelHeroesPressLevelUp
 	touchPress 1 280 750
 	#time = #time + 690
 	
-	getColor #color1 249 515
+	getColor #color1 275 527
+	getColor #color2 275 508
 	//300 510
-	if #color1 == #colorGray
+	if #color1 == #colorGray and #color2 == #colorGray
 		#loopDetectionCount = 0
 		goto :closeMenu
 	endif
@@ -1703,7 +1729,7 @@ goto :runActions
 		sleep #btnDelay
 		touchUp 0
 		sleep #btnDelay
-		#time = #time + 4* #btnDelay
+		#time = #time + 4 * #btnDelay
 	endif
 	
 	//hatchEggs
@@ -1803,8 +1829,137 @@ goto :pressSkills
 		touchUp 0
 	endif
 	
-	sleep 35
-	#time = #time + #hitDelay
+	sleep #hitDelay2
+	#time = #time + #hitDelay2
+	
+	if #astralAwakening == 1
+		#hero = #hero + 1
+		
+		if #equipmentStacking == 1
+			if #hero == 1 or #hero == 3 or #hero == 6 or #hero == 11 or #hero == 14 or #hero == 19 or #hero == 22
+				#hero = #hero + 1
+			endif
+		endif
+		
+		if #hero == 1
+			touchDown 0 350 400
+			touchUp 0
+		elseif #hero == 2
+			touchDown 0 135 400
+			touchUp 0
+		elseif #hero == 3
+			touchDown 0 435 390
+			touchUp 0
+		elseif #hero == 4
+			touchDown 0 100 395
+			touchUp 0
+		elseif #hero == 5
+			touchDown 0 100 315
+			touchUp 0
+		elseif #hero == 6
+			touchDown 0 400 305
+			touchUp 0
+		elseif #hero == 7
+			touchDown 0 55 275
+			touchUp 0
+		elseif #hero == 8
+			touchDown 0 455 305
+			touchUp 0
+		elseif #hero == 9
+			touchDown 0 35 305
+			touchUp 0
+		elseif #hero == 10
+			touchDown 0 50 375
+			touchUp 0
+		elseif #hero == 11
+			touchDown 0 400 400
+			touchUp 0
+		elseif #hero == 12
+			touchDown 0 10 305
+			touchUp 0
+		elseif #hero == 13
+			touchDown 0 75 410
+			touchUp 0
+		elseif #hero == 14
+			touchDown 0 425 305
+			touchUp 0
+		elseif #hero == 15
+			touchDown 0 400 225
+			touchUp 0
+		elseif #hero == 16
+			touchDown 0 465 410
+			touchUp 0
+		elseif #hero == 17
+			touchDown 0 20 380
+			touchUp 0
+		elseif #hero == 18
+			touchDown 0 15 210
+			touchUp 0
+		elseif #hero == 19
+			touchDown 0 380 365
+			touchUp 0
+		elseif #hero == 20
+			touchDown 0 445 205
+			touchUp 0
+		elseif #hero == 21
+			touchDown 0 50 225
+			touchUp 0
+		elseif #hero == 22
+			touchDown 0 375 305
+			touchUp 0
+		elseif #hero == 23
+			touchDown 0 470 225
+			touchUp 0
+		elseif #hero == 24
+			touchDown 0 80 225
+			touchUp 0
+		elseif #hero == 25
+			touchDown 0 75 305
+			touchUp 0
+		elseif #hero == 26
+			touchDown 0 445 170
+			touchUp 0
+		elseif #hero == 27
+			touchDown 0 415 170
+			touchUp 0
+		elseif #hero == 28
+			touchDown 0 370 170
+			touchUp 0
+		elseif #hero == 29
+			touchDown 0 95 190
+			touchUp 0
+		elseif #hero == 30
+			touchDown 0 30 180
+			touchUp 0
+		elseif #hero == 31
+			touchDown 0 425 225
+			touchUp 0
+		elseif #hero == 32
+			touchDown 0 465 120
+			touchUp 0
+		elseif #hero == 33
+			touchDown 0 385 135
+			touchUp 0
+		elseif #hero == 34
+			touchDown 0 80 130
+			touchUp 0
+		elseif #hero == 35
+			touchDown 0 465 125
+			touchUp 0
+		elseif #hero == 36
+			touchDown 0 115 140
+			touchUp 0
+		elseif #hero == 37
+			touchDown 0 420 80
+			touchUp 0
+		endif		
+		
+		sleep #hitDelay2
+		
+		if #hero > 36
+			#hero = 0
+		endif
+	endif
 	
 	if #hitCount > 10
 		#hitCount = 0
