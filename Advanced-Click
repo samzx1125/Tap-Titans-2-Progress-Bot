@@ -15,7 +15,7 @@ var #enableTapping 1
 // 1 = (default) hit the titans with your sword master
 // 0 = disable hits (except on CQ)
 
-var #enableClanShip 1
+var #enableCO 1
 var #PHoM 1
 var #astralAwakening 1
 // #astralAwakening is also affected by #equipStack below
@@ -30,7 +30,7 @@ var #lateRun 0
 // if #lateRun > 0, will resume run at #minutes = #lateRun
 // 2nd run onwards will NOT adjust time
 
-var #prestigeStartTime 25
+var #prestigeStartTime 45
 // input minimum time in minutes before prestige
 // prestige time range is ALWAYS +10 more minutes greater than StartTime to prevent teapot
 // ---------- Actions ---------- [ General ]
@@ -377,14 +377,14 @@ goto :start
 	sleep #menuSlideDelay
 	#time = #time + #menuSlideDelay + 40
 
-	if #enableClanShip == 1
-		touchPress 0 65 100
+	if #enableCO == 1
+		touchPress 0 175 410
 		sleep #shipDelay
-		touchPress 0 65 100
+		touchPress 0 175 410
 		sleep #shipDelay
-		touchPress 0 65 100
+		touchPress 0 175 410
 		sleep #shipDelay
-		touchPress 0 65 100
+		touchPress 0 175 410
 		sleep #shipDelay
 		#time = #time + 4 * #shipDelay
 	endif
@@ -1958,14 +1958,14 @@ goto :pressSkills
 	
 	#time = #time + 400
 	
-	if #enableClanShip == 1
-		touchPress 0 65 100
+	if #enableCO == 1
+		touchPress 0 175 410
 		sleep #shipDelay
-		touchPress 0 65 100
+		touchPress 0 175 410
 		sleep #shipDelay
-		touchPress 0 65 100
+		touchPress 0 175 410
 		sleep #shipDelay
-		touchPress 0 65 100
+		touchPress 0 175 410
 		sleep #shipDelay
 		#time = #time + #shipDelay * 4
 	endif
