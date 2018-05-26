@@ -7,7 +7,7 @@ A HiroMacro script for Tap Titans 2 originally by Tune389
 - - - - -
 
 # Frequently Asked Questions (FAQs) and How to report bugs
-https://github.com/chrisreyn/Tap-Titans-2-Progress-Bot/issues/17
+https://github.com/chrisreyn/Tap-Titans-2-Progress-Bot/wiki
 - No asking for personalized scripts
 - Only bug reports, function suggestions please
 
