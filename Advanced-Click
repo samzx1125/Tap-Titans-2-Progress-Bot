@@ -1,6 +1,6 @@
 // -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1]
 // edited by djo5296 '17-12-30
-// chrisreyn SC Mana Siphon May 26 2018
+// chrisreyn SC Mana Siphon May 26 2018 - 10pm
 // thanks to tommy8208 for testing
 // code and suggestions from atereshkov, GitGud2018
 SCREEN_SIZE: 480x800
@@ -74,6 +74,12 @@ var #intervalFS 31
 var #intervalHoM 11
 var #intervalWC 11
 var #intervalSC 6
+
+var #scActiveCheck 1
+//used mainly for SC+Mana Siphon procs
+//0 = Activate skills every X seconds normally
+//1 = Activate skills every X seconds only if SC is active and has 1/4 duration left
+// 1/4th duration of SC is usually enough to generate mana from a decent level of Mana Siphon
 
 var #unlocked 0
 // ^dont edit unless you know what it's for
@@ -171,7 +177,7 @@ endif
 var #prestigeSlide 0
 var #manualMax 0
 var #hero 0
-var #scActiveCheck 0
+var #scAC 0
 // ---------- Delays
 var #btnDelay 150
 var #hitDelay 40
@@ -401,13 +407,22 @@ goto :start
 	
 	#timeDiff = #secondsTotal - #lastPressHoM
 	if #timeDiff >= #intervalHoM and #intervalHoM > 0
-		if #scActiveCheck == 0
-			#scActiveCheck = 1
-			getRGB #colorRed #colorGreen #colorBlue 410 705
-			#time = #time + 100
-		endif
-		
-		if #colorRed == -1 and #colorBlue == 0
+		if #scActiveCheck == 1
+			if #scAC == 0
+				#scAC = 1
+				getRGB #colorRed #colorGreen #colorBlue 410 705
+				#time = #time + 100
+			endif
+			
+			if #colorRed == -1 and #colorBlue == 0
+				#lastPressHoM = #secondsTotal
+				touchPress 0 200 710
+				sleep #skillDelay
+				touchPress 0 200 710
+				sleep #skillDelay
+				#time = #time + #skillDelay * 2
+			endif
+		else
 			#lastPressHoM = #secondsTotal
 			touchPress 0 200 710
 			sleep #skillDelay
@@ -418,14 +433,23 @@ goto :start
 	endif
 	#timeDiff = #secondsTotal - #lastPressDS
 	if #timeDiff >= #intervalDS and #intervalDS > 0
-		if #scActiveCheck == 0
-			#scActiveCheck = 1
-			getRGB #colorRed #colorGreen #colorBlue 410 705
-			#time = #time + 100
-		endif
-		
-		if #colorRed == -1 and #colorBlue == 0
-			#lastPressDS = #secondsTotal
+		if #scActiveCheck == 1
+			if #scAC == 0
+				#scAC = 1
+				getRGB #colorRed #colorGreen #colorBlue 410 705
+				#time = #time + 100
+			endif
+			
+			if #colorRed == -1 and #colorBlue == 0
+				#lastPressDS = #secondsTotal
+				touchPress 0 120 710
+				sleep #skillDelay
+				touchPress 0 120 710
+				sleep #skillDelay
+				#time = #time + #skillDelay * 2
+			endif
+		else
+			#lastPressHoM = #secondsTotal
 			touchPress 0 120 710
 			sleep #skillDelay
 			touchPress 0 120 710
@@ -435,14 +459,23 @@ goto :start
 	endif
 	#timeDiff = #secondsTotal - #lastPressWC
 	if #timeDiff >= #intervalWC and #intervalWC > 0
-		if #scActiveCheck == 0
-			#scActiveCheck = 1
-			getRGB #colorRed #colorGreen #colorBlue 410 705
-			#time = #time + 100
-		endif
-		
-		if #colorRed == -1 and #colorBlue == 0
-			#lastPressWC = #secondsTotal
+		if #scActiveCheck == 1
+			if #scAC == 0
+				#scAC = 1
+				getRGB #colorRed #colorGreen #colorBlue 410 705
+				#time = #time + 100
+			endif
+			
+			if #colorRed == -1 and #colorBlue == 0
+				#lastPressWC = #secondsTotal
+				touchPress 0 360 710
+				sleep #skillDelay
+				touchPress 0 360 710
+				sleep #skillDelay
+				#time = #time + #skillDelay * 2
+			endif
+		else
+			#lastPressHoM = #secondsTotal
 			touchPress 0 360 710
 			sleep #skillDelay
 			touchPress 0 360 710
@@ -452,14 +485,23 @@ goto :start
 	endif
 	#timeDiff = #secondsTotal - #lastPressFS
 	if #timeDiff >= #intervalFS and #intervalFS > 0
-		if #scActiveCheck == 0
-			#scActiveCheck = 1
-			getRGB #colorRed #colorGreen #colorBlue 410 705
-			#time = #time + 100
-		endif
-		
-		if #colorRed == -1 and #colorBlue == 0
-			#lastPressFS = #secondsTotal
+		if #scActiveCheck == 1
+			if #scAC == 0
+				#scAC = 1
+				getRGB #colorRed #colorGreen #colorBlue 410 705
+				#time = #time + 100
+			endif
+			
+			if #colorRed == -1 and #colorBlue == 0
+				#lastPressFS = #secondsTotal
+				touchPress 0 280 710
+				sleep #skillDelay
+				touchPress 0 280 710
+				sleep #skillDelay
+				#time = #time + #skillDelay * 2
+			endif
+		else
+			#lastPressHoM = #secondsTotal
 			touchPress 0 280 710
 			sleep #skillDelay
 			touchPress 0 280 710
@@ -469,14 +511,23 @@ goto :start
 	endif
 	#timeDiff = #secondsTotal - #lastPressHS
 	if #timeDiff >= #intervalHS and #intervalHS > 0
-		if #scActiveCheck == 0
-			#scActiveCheck = 1
-			getRGB #colorRed #colorGreen #colorBlue 410 705
-			#time = #time + 100
-		endif
-		
-		if #colorRed == -1 and #colorBlue == 0 and #intervalHS > 0
-			#lastPressHS = #secondsTotal
+		if #scActiveCheck == 1
+			if #scAC == 0
+				#scAC = 1
+				getRGB #colorRed #colorGreen #colorBlue 410 705
+				#time = #time + 100
+			endif
+			
+			if #colorRed == -1 and #colorBlue == 0 and #intervalHS > 0
+				#lastPressHS = #secondsTotal
+				touchPress 0 40 710
+				sleep #skillDelay
+				touchPress 0 40 710
+				sleep #skillDelay
+				#time = #time + #skillDelay * 2
+			endif
+		else
+			#lastPressHoM = #secondsTotal
 			touchPress 0 40 710
 			sleep #skillDelay
 			touchPress 0 40 710
@@ -485,7 +536,7 @@ goto :start
 		endif
 	endif
 	
-	#scActiveCheck = 0
+	#scAC = 0
 
 if #topHeroes > 0
 	#timeDiff = #secondsTotal - #lastTopHeroes
