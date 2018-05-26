@@ -1,8 +1,8 @@
 // -  Tap Titans 2 RandomClicker by Tune389 [ v1 ]
 // edited by djo5296 '17-12-23 v2
-// chrisreyn Push May 22 2018
+// chrisreyn Push May 26 2018
 
-//THIS SCRIPT HAS NO CQ, NO PRESTIGE, NO SKILL LEVEL UP (just activate), ONLY RECENT HERO LEVEL UP
+//THIS SCRIPT HAS NO PRESTIGE, NO SKILL LEVEL UP (just activate), ONLY RECENT HERO LEVEL UP
 
 SCREEN_SIZE: 480x800
 
@@ -15,6 +15,7 @@ var #startY 160
 // use 160 if w/ faries
 // use 270 if no faries
 
+var #enableCO 1
 var #PHoM 1
 var #equipmentStacking 1
 var #agree 1
@@ -23,7 +24,13 @@ var #decline 0
 // decline = 1 if you cannot turn off fairy ads but want to click on all fairies
 // you can leave both at 0 if you turn off fairy ads (change #startY if so)
 // do not make both agree and decline = 1 hahaha
+// ---------- Actions ---------- [ ClanQuest ]
+var #enableClanQuest 1
 
+//clan boss with max possible hits
+var #clanQuestRunsPerReadyUp 1
+// 1 = (default) attack every ready up once for free
+// 2-99 = spend dias for more attacks
 // ----------- Heroes
 
 var #levelUpToggle 1
@@ -54,8 +61,14 @@ var #menuCloseY 455
 var #menuCloseX 466
 var #delay 20
 var #btnDelay 150
+var #menuPopUpDelay 500
 var #skillDelay 50
+var #loadingClanQuestDelay 3000
 
+var #cqCheck 1
+var #clanQuestCount 0
+var #clanQuestLoopCount 0
+var #recheckClanQuest 0
 var #hero 0
 var #hitCount 0
 var #extraCount 0
@@ -66,7 +79,11 @@ var #loopDetectionCount 0
 
 var #color1 0
 var #color2 0
+var #colorRed 0
+var #colorGreen 0
+var #colorBlue 0
 var #colorGray 2695200
+var #colorStatsButton 3695603
 if #startHeroLevelUpNow == 1
 	#hitCount = 1199
 endif
@@ -104,114 +121,151 @@ endif
 		endif
 		
 		if #hero == 1
+		//Maya
 			touchDown 0 350 400
 			touchUp 0
 		elseif #hero == 2
+		//Zato
 			touchDown 0 135 400
 			touchUp 0
 		elseif #hero == 3
+		//Sophia
 			touchDown 0 435 390
 			touchUp 0
 		elseif #hero == 4
+		//Lance
 			touchDown 0 100 395
 			touchUp 0
 		elseif #hero == 5
+		//Pingo
 			touchDown 0 100 315
 			touchUp 0
 		elseif #hero == 6
+		//Rosabella
 			touchDown 0 400 305
 			touchUp 0
 		elseif #hero == 7
+		//Gulbrand
 			touchDown 0 55 275
 			touchUp 0
 		elseif #hero == 8
+		//Captain Davey
 			touchDown 0 455 305
 			touchUp 0
 		elseif #hero == 9
+		//Rhys
 			touchDown 0 35 305
 			touchUp 0
 		elseif #hero == 10
+		//Kronus
 			touchDown 0 50 375
 			touchUp 0
 		elseif #hero == 11
+		//Cosette
 			touchDown 0 400 400
 			touchUp 0
 		elseif #hero == 12
+		//Kiki
 			touchDown 0 10 305
 			touchUp 0
 		elseif #hero == 13
+		//Maddie
 			touchDown 0 75 410
 			touchUp 0
 		elseif #hero == 14
+		//Beany
 			touchDown 0 425 305
 			touchUp 0
 		elseif #hero == 15
+		//Sawyer
 			touchDown 0 400 225
 			touchUp 0
 		elseif #hero == 16
+		//Lil' Ursa
 			touchDown 0 465 410
 			touchUp 0
 		elseif #hero == 17
+		//Saje
 			touchDown 0 20 380
 			touchUp 0
 		elseif #hero == 18
+		//Wally
 			touchDown 0 15 210
 			touchUp 0
 		elseif #hero == 19
+		//Jayce
 			touchDown 0 380 365
 			touchUp 0
 		elseif #hero == 20
+		//Great Pharaoh
 			touchDown 0 445 205
 			touchUp 0
 		elseif #hero == 21
+		//Boomoh Doctor
 			touchDown 0 50 225
 			touchUp 0
 		elseif #hero == 22
+		//Dex-1000
 			touchDown 0 375 305
 			touchUp 0
 		elseif #hero == 23
+		//Great Madame Cass
 			touchDown 0 470 225
 			touchUp 0
 		elseif #hero == 24
+		//Lala
 			touchDown 0 80 225
 			touchUp 0
 		elseif #hero == 25
+		//Aya
 			touchDown 0 75 305
 			touchUp 0
 		elseif #hero == 26
+		//Lady Lucy
 			touchDown 0 445 170
 			touchUp 0
 		elseif #hero == 27
+		//Jazz
 			touchDown 0 415 170
 			touchUp 0
 		elseif #hero == 28
+		//Maple
 			touchDown 0 370 170
 			touchUp 0
 		elseif #hero == 29
+		//Kin
 			touchDown 0 95 190
 			touchUp 0
 		elseif #hero == 30
+		//Princess Titania
 			touchDown 0 30 180
 			touchUp 0
 		elseif #hero == 31
+		//Miki
 			touchDown 0 425 225
 			touchUp 0
 		elseif #hero == 32
+		//Mina
 			touchDown 0 465 120
 			touchUp 0
 		elseif #hero == 33
+		//Yzafa
 			touchDown 0 385 135
 			touchUp 0
 		elseif #hero == 34
+		//Zolom
 			touchDown 0 80 130
 			touchUp 0
 		elseif #hero == 35
+		//Finn
 			touchDown 0 465 125
 			touchUp 0
 		elseif #hero == 36
+		//Nohni
 			touchDown 0 115 140
 			touchUp 0
 		elseif #hero == 37
+		//Damon
 			touchDown 0 420 80
 			touchUp 0
 		endif		
@@ -261,6 +315,13 @@ goto :start
 		touchUp 0
 		sleep 18
 	endif
+	
+	if #enableCO == 1
+		touchPress 0 175 410
+		sleep #delay
+		touchPress 0 175 410
+		sleep #delay
+	sleep #shipDelay
 
 	if #agree == 1
 		touchDown 0 300 630
@@ -325,6 +386,25 @@ goto :extra
 
 :levelUp
 	#hitCount = 0
+	
+	if #enableClanQuest == 1 and #cqCheck == 1
+		#cqCheck = 0
+		goto :checkClanQuest
+	endif
+	
+	#cqCheck = 1
+	
+	//click "Fight Boss"
+	getColor #color1 372 24
+	if #color1 == 1076975
+		toast FightBoss1
+		touchPress 0 390 36
+		sleep 40
+		touchUp
+		sleep 40
+		#time = #time + 80
+		goto :pressSkills
+	endif
 	
 	if #levelUpToggle == 0
 		goto :skills
@@ -479,7 +559,8 @@ goto :levelHeroesSlideUpCollection
 
 :levelHeroesSlideUpCollection
 	#loopDetectionCount = #loopDetectionCount + 1
-	if #loopDetectionCount > 10
+	if #loopDetectionCount > 7
+		#loopDetectionCount = 0
 		toast levelHeroesSlideUpCollection loop
 		goto :closeMenu
 	endif
@@ -527,3 +608,118 @@ goto :levelHeroesPressLevelUp
 	touchPress 0 #menuCloseX #menuCloseY
 	sleep #menuSlideDelay
 goto :skills
+
+// ---------- CHECK CLAN QUEST
+:checkClanQuest
+	sleep 300
+	
+	getRGB #colorRed #colorGreen #colorBlue 72 21
+	getColor #color1 65 795
+	if #colorRed < 190 and #colorRed > 120 and #color1 == #colorStatsButton
+		#recheckClanQuest = 1
+		goto :checkClanQuestReady
+	endif
+goto :levelUp
+	
+:checkClanQuestReady
+	//open CQ menu
+	sleep #btnDelay
+	touchDown 0 80 25
+	sleep #btnDelay
+	touchUp 0
+	sleep #btnDelay + 250
+	
+	//touch clan icon bottom
+	touchDown 0 100 730
+	sleep #btnDelay
+	touchUp 0
+	sleep #loadingClanQuestDelay
+	
+	getColor #color1 420 725
+	//420 730
+	
+	if #color1 == -1785765 and #clanQuestCount == 0
+		#recheckClanQuest = 0
+		goto :clanQuestClose
+	endif
+	
+	//boss progress color 
+	getColor #color1 175 335
+	
+	#clanQuestLoopCount = 0
+	
+	if #color1 == 2055160
+		//boss up
+		touchDown 0 310 740
+		sleep #btnDelay
+		touchUp 0
+		sleep #menuPopUpDelay
+		goto :clanQuestCheckDias
+	elseif #color1 == 0
+		//boss down
+		#recheckClanQuest = 0
+	endif
+
+	//close (and recheck)
+goto :clanQuestClose
+
+:clanQuestCheckDias
+	getColor #color1 40 215
+	
+	if #color1 == -7775689
+		//no dias left
+		#recheckClanQuest = 0
+		goto :clanQuestClose
+	else
+		touchDown 0 325 450
+		//330 450
+		sleep #btnDelay
+		touchUp 0
+		
+		sleep 3000
+		getColor #color1 20 770
+		
+		goto :clanQuestHit
+	endif
+	
+:clanQuestHit
+	if #color1 == -28929 and #clanQuestLoopCount == 0
+		//add quest
+		#clanQuestCount = #clanQuestCount + 1
+	endif
+
+	#clanQuestLoopCount = #clanQuestLoopCount + 1
+	
+	if #color1 == -28929 and #clanQuestLoopCount < 1000
+		//hit the boss
+		touchDown 0 180 730
+		touchUp 0
+		sleep 28
+		goto :clanQuestHit
+	elseif #clanQuestLoopCount > 950
+		goto :clanQuestClose
+	endif
+
+:clanQuestClose
+	getColor #color1 65 788
+	if #color1 == #colorStatsButton
+		goto :clanQuestCloseCheck
+	else
+		touchDown 0 415 45
+		sleep 35
+		touchUp 0
+		sleep 200
+		touchDown 0 420 210
+		sleep 35
+		touchUp 0
+		sleep 200
+		goto :clanQuestClose
+	endif
+	
+:clanQuestCloseCheck
+	if #recheckClanQuest == 1 and #clanQuestCount < #clanQuestRunsPerReadyUp
+		goto :checkClanQuestReady
+	else
+		#clanQuestCount = 0
+		goto :levelUp
+	endif
