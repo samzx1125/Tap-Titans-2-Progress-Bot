@@ -25,8 +25,8 @@ https://github.com/chrisreyn/Tap-Titans-2-Progress-Bot/wiki
  - Download Memu (Bluestacks untested. Crashes too often on Nox so do NOT use Nox)
  - Enable root
  - Set screen size to: 480x800
-## Memu Android 5 options
- - Settings -> SuperUser -> disable notifications
+# Android 5 options
+ - Android Settings -> SuperUser -> disable notifications
  
 ## Apps needed
  - Install HiroMacro
@@ -35,9 +35,12 @@ https://github.com/chrisreyn/Tap-Titans-2-Progress-Bot/wiki
    - important to change default launcher to prevent emulator memory issues and background ad app downloads
    
 ## Copying and transfering codes into Memu
+1. On your computer
  - Copy codes and save as .txt files
- - Set a copy into any of the Memu shareable folders
- - Using Memu file manager, locate .txt files and copy them into 0/HiroMacro/Documents
+ - Set a copy into any of the Memu-PC shared folders
+ 
+2. On Memu
+ - Using Memu file manager, locate .txt files from the shared folder and copy them into 0/HiroMacro/Documents
  
 ## HiroMacro Settings
  - HiroMacro Settings -> Color Access Method -> ScreenCapture
