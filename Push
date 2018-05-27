@@ -1,6 +1,6 @@
 // -  Tap Titans 2 RandomClicker by Tune389 [ v1 ]
 // edited by djo5296 '17-12-23 v2
-// chrisreyn Push May 26 2018
+// chrisreyn Push May 27 2018
 
 //THIS SCRIPT HAS NO PRESTIGE, NO SKILL LEVEL UP (just activate), ONLY RECENT HERO LEVEL UP
 
@@ -88,16 +88,13 @@ if #startHeroLevelUpNow == 1
 	#hitCount = 1199
 endif
 
-// ----------- Hero Coordinates
-
-
 // ----------- RANDOM ATTACK
 :start
 	rand #randomX #startX #endX
 	rand #randomY #startY #endY
 	
 	//equipment stacking
-	if #randomX > 280 and #randomX < 440 and #randomY > 280 and #equipmentStacking == 1
+	if #randomX > 275 and #randomX < 400 and #randomY > 340 and #equipmentStacking == 1
 		goto :start
 	endif
 	
@@ -238,7 +235,7 @@ endif
 			touchUp 0
 		elseif #hero == 30
 		//Princess Titania
-			touchDown 0 30 180
+			touchDown 0 25 175
 			touchUp 0
 		elseif #hero == 31
 		//Miki
@@ -254,7 +251,7 @@ endif
 			touchUp 0
 		elseif #hero == 34
 		//Zolom
-			touchDown 0 80 130
+			touchDown 0 60 170
 			touchUp 0
 		elseif #hero == 35
 		//Finn
@@ -262,13 +259,13 @@ endif
 			touchUp 0
 		elseif #hero == 36
 		//Nohni
-			touchDown 0 115 140
+			touchDown 0 120 145
 			touchUp 0
 		elseif #hero == 37
 		//Damon
 			touchDown 0 420 80
 			touchUp 0
-		endif		
+		endif
 		
 		sleep #delay
 		
@@ -298,19 +295,19 @@ goto :start
 
 :extra
 	if #PHoM == 1
-		touchDown 0 283 377
+		touchDown 0 270 370
 		sleep 12
 		touchUp 0
 		sleep 14
-		touchPress 0 283 377
+		touchPress 0 270 370
 		sleep 2
 		touchUp
 		sleep 3
-		touchPress 0 283 377
+		touchPress 0 270 370
 		sleep 16
 		touchUp 0
 		sleep 18
-		touchDown 0 283 377
+		touchDown 0 270 370
 		sleep 10
 		touchUp 0
 		sleep 18
@@ -402,7 +399,6 @@ goto :extra
 		sleep 40
 		touchUp
 		sleep 40
-		#time = #time + 80
 		goto :pressSkills
 	endif
 	
@@ -410,9 +406,8 @@ goto :extra
 		goto :skills
 	endif
 	
-	sleep 3000
-	
 	if #agree == 1
+		sleep 3000
 		touchPress 300 630
 		sleep #btnDelay
 		touchPress 300 630
@@ -422,6 +417,7 @@ goto :extra
 	endif
 	
 	if #decline == 1
+		sleep 3000
 		touchPress 200 630
 		sleep #btnDelay
 		touchPress 200 630
@@ -627,7 +623,9 @@ goto :levelUp
 	touchDown 0 80 25
 	sleep #btnDelay
 	touchUp 0
-	sleep #btnDelay + 250
+	sleep #btnDelay
+	sleep 250
+	sleep 250
 	
 	//touch clan icon bottom
 	touchDown 0 100 730
