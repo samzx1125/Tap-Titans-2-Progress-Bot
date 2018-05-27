@@ -29,7 +29,9 @@ https://github.com/chrisreyn/Tap-Titans-2-Progress-Bot/wiki
  - Settings -> SuperUser -> disable notifications
  
 ## Apps needed
- - Install HiroMacro + Tap Titans 2 + custom launcher
+ - Install HiroMacro
+ - Install Tap Titans 2
+ - Install custom launcher (use any from the play store; I use Nova)
    - important to change default launcher to prevent emulator memory issues and background ad app downloads
    
 ## Copying and transfering codes into Memu
