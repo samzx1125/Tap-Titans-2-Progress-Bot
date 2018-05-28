@@ -35,12 +35,29 @@ https://github.com/chrisreyn/Tap-Titans-2-Progress-Bot/wiki
    - important to change default launcher to prevent emulator memory issues and background ad app downloads
    
 ## Copying and transfering codes into Memu
+because copy-paste does not retain format, do the following:
+
 1. On your computer
- - Copy codes and save as .txt files
- - Set a copy into any of the Memu-PC shared folders
- 
+ - Copy codes and save as .txt files (for convenience, save on Desktop)
+
 2. On Memu
- - Using Memu file manager, locate .txt files from the shared folder and copy them into 0/HiroMacro/Documents
+ - Look for "Shared Folder" button on toolbar (default is along the right side) and click it
+ - A new window will open, click "Open" for any shared folder (I use "Shared Download Path", but it _really_ doesn't matter)
+ - 2 things should happen:
+  - Windows File Explorer should open the chosen shared folder
+  - Memu will change windows to Memu File Manager and also on the shared folder
+
+3. Back to computer
+ - Put a copy of .txt file into the newly opened shared folder (default Memu-PC shared download folder path is <user>/Downloads/MEmu Download )
+ 
+4. On Memu again
+ - Using Memu file manager (which you should now be on), first click the "..." parent folder to go out of the folder then re-open the same folder as in step 2 to refresh the contents of the folder
+ - locate .txt file/s from the chosen shared folder
+ - tick the box of the .txt files you placed so that they are selected (put check marks on the boxes to the left of the files)
+ - click "..." parent folder again and look for HiroMacro Documents folder (path is 0/HiroMacro/Documents )
+ - click the button on the lower left (looks like 6 dots)
+ - choose "Copy selection here" and .txt files should be copied into Hiro Documents folder
+ - you can now activate Hiro (volume down by default) and the codes should appear by .txt filename
  
 ## HiroMacro Settings
  - HiroMacro Settings -> Color Access Method -> ScreenCapture
