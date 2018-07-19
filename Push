@@ -1,6 +1,6 @@
 // -  Tap Titans 2 RandomClicker by Tune389 [ v1 ]
 // edited by djo5296 '17-12-23 v2
-// chrisreyn Push May 27 2018
+// chrisreyn Push July 19 2018
 
 //THIS SCRIPT HAS NO PRESTIGE, NO SKILL LEVEL UP (just activate), ONLY RECENT HERO LEVEL UP
 
@@ -17,7 +17,7 @@ var #startY 160
 
 var #enableCO 1
 var #PHoM 1
-var #equipmentStacking 1
+var #equipmentStacking 0
 var #agree 1
 var #decline 0
 // agree = 1 if you want to auto accept fairy ads; aka skippable fairy ads
@@ -94,7 +94,7 @@ endif
 	rand #randomY #startY #endY
 	
 	//equipment stacking
-	if #randomX > 275 and #randomX < 400 and #randomY > 340 and #equipmentStacking == 1
+	if #randomX > 310 and #randomX < 415 and #randomY > 290 and #equipmentStacking == 1
 		goto :start
 	endif
 	
@@ -112,7 +112,7 @@ endif
 		#hero = #hero + 1
 		
 		if #equipmentStacking == 1
-			if #hero == 1 or #hero == 3 or #hero == 6 or #hero == 11 or #hero == 14 or #hero == 19 or #hero == 22
+			if #hero == 1 or #hero == 6
 				#hero = #hero + 1
 			endif
 		endif
@@ -157,7 +157,19 @@ endif
 		//Kronus
 			touchDown 0 50 375
 			touchUp 0
-		elseif #hero == 11
+		endif
+	endif
+goto :randomTouchB
+
+:randomTouchB
+	if #astralAwakening == 1
+		if #equipmentStacking == 1
+			if #hero == 11 or #hero == 19
+				#hero = #hero + 1
+			endif
+		endif
+
+		if #hero == 11
 		//Cosette
 			touchDown 0 400 400
 			touchUp 0
@@ -197,7 +209,19 @@ endif
 		//Great Pharaoh
 			touchDown 0 445 205
 			touchUp 0
-		elseif #hero == 21
+		endif
+	endif
+goto :randomTouchC
+
+:randomTouchC
+	if #astralAwakening == 1
+		if #equipmentStacking == 1
+			if #hero == 22
+				#hero = #hero + 1
+			endif
+		endif
+		
+		if #hero == 21
 		//Boomoh Doctor
 			touchDown 0 50 225
 			touchUp 0
@@ -237,7 +261,13 @@ endif
 		//Princess Titania
 			touchDown 0 25 175
 			touchUp 0
-		elseif #hero == 31
+		endif
+	endif
+goto :randomTouchD
+
+:randomTouchD
+	if #astralAwakening == 1
+		if #hero == 31
 		//Miki
 			touchDown 0 425 225
 			touchUp 0
@@ -267,7 +297,7 @@ endif
 			touchUp 0
 		endif
 		
-		sleep #delay
+		sleep #hitDelay2
 		
 		if #hero > 36
 			#hero = 0
@@ -277,7 +307,7 @@ endif
 	#hitCount = #hitCount + 1
 	#extraCount = #hitCount % 12
 	#skillCount = #hitCount % 72
-	#levelCount = #hitCount % 1200
+	#levelCount = #hitCount % 1000
 	
 	if #levelCount == 0
 		#hitCount = 0
@@ -322,13 +352,13 @@ goto :start
 
 	if #agree == 1
 		touchDown 0 300 630
-		sleep 20
+		sleep 30
 		touchUp 0
-		sleep 20
+		sleep 30
 		touchDown 0 300 630
-		sleep 20
+		sleep 30
 		touchUp 0
-		sleep 20
+		sleep 30
 	endif
 
 	if #decline == 1
