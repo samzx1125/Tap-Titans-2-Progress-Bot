@@ -4,7 +4,7 @@
 // thanks to tommy8208 for testing
 // code and suggestions from atereshkov, GitGud2018
 SCREEN_SIZE: 480x800
-
+ 
 // ---------- Click Areas
 var #enableFairies 1
 var #enablePremiumCollect 1
