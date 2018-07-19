@@ -3,10 +3,22 @@ A HiroMacro script for Tap Titans 2 originally by Tune389
 - then edited by djo5296
 
 - continued by chrisreyn; tested by tommy8208; other suggestions from atereshkov and GitGud2018
+- - - - -
+
+About Adv-Click script:
+- full script package lol
+
+About Push script:
+- THIS SCRIPT HAS NO PRESTIGE, NO SKILL LEVEL UP (just activate), ONLY RECENT HERO LEVEL UP
+- do not request for prestige function with this script. Use Adv-Click for prestige
+  - rationale: https://www.elitepvpers.com/forum/mobile-games/4224861-tap-titans-2-advanced-clickbot-hiromacro-70.html#post37011994
 
 - - - - -
 
 # Frequently Asked Questions (FAQs) and How to report bugs
+==PLEASE READ BOTH==
+
+https://github.com/chrisreyn/Tap-Titans-2-Progress-Bot/issues/40#issuecomment-406219584
 https://github.com/chrisreyn/Tap-Titans-2-Progress-Bot/wiki
 - No asking for personalized scripts
 - Only bug reports, function suggestions please
@@ -15,6 +27,7 @@ https://github.com/chrisreyn/Tap-Titans-2-Progress-Bot/wiki
 
 ## Basic Requirements:
  - Android 5 Device or Emulator (ONLY MEMU, Bluestacks untested)
+   - confirmed working stable version: 5.5.5 (July 12)
  - Resolution 480x800 (you can change it maybe if your device is different)
  - Root, for HiroMacro
 
@@ -23,9 +36,11 @@ https://github.com/chrisreyn/Tap-Titans-2-Progress-Bot/wiki
 # Installation
 ## Memu system options
  - Download Memu (Bluestacks untested. Crashes too often on Nox so do NOT use Nox)
+   - confirmed working stable version: 5.5.5 (July 12)
  - Enable root
  - Set screen size to: 480x800
-# Android 5 options
+ 
+## Android 5 options
  - Android Settings -> SuperUser -> disable notifications
  
 ## Apps needed
