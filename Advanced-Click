@@ -1,6 +1,6 @@
 // -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1]
 // edited by djo5296 '17-12-30
-// chrisreyn SC Mana Siphon May 27 2018
+// chrisreyn SC Mana Siphon July 19 2018
 // thanks to tommy8208 for testing
 // code and suggestions from atereshkov, GitGud2018
 SCREEN_SIZE: 480x800
@@ -88,7 +88,7 @@ var #unlocked 0
 if #lateRun > 0
 	#intervalHS = 0
 	#intervalDS = 11
-	#intervalFS = 0
+	#intervalFS = 31
 	#intervalHoM = 11
 	#intervalWC = 11
 	#intervalSC = 11
