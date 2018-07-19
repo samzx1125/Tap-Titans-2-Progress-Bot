@@ -3,6 +3,7 @@ A HiroMacro script for Tap Titans 2 originally by Tune389
 - then edited by djo5296
 
 - continued by chrisreyn; tested by tommy8208; other suggestions from atereshkov and GitGud2018
+- - - - -
 
 About Adv-Click script:
 - full script package lol
