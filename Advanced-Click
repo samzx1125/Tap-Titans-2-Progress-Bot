@@ -20,7 +20,7 @@ var #PHoM 1
 var #astralAwakening 1
 // #astralAwakening is also affected by #equipStack below
 
-var #equipStack 1
+var #equipStack 0
 // if set to 1, will skip some heroes when tapping for Astral Awakening
 // ---------- Actions ---------- [ Prestige ]
 var #enableAutoprestige 1
@@ -28,9 +28,9 @@ var #enableAutoprestige 1
 var #lateRun 0
 // if 0, no change to run
 // if #lateRun > 0, will resume run at #minutes = #lateRun
-// 2nd run onwards will NOT adjust time
+// 2nd run onwards (aka after prestige) will NOT adjust time
 
-var #prestigeStartTime 45
+var #prestigeStartTime 40
 // input minimum time in minutes before prestige
 // prestige time range is ALWAYS +10 more minutes greater than StartTime to prevent teapot
 // ---------- Actions ---------- [ General ]
@@ -88,7 +88,7 @@ var #unlocked 0
 if #lateRun > 0
 	#intervalHS = 0
 	#intervalDS = 11
-	#intervalFS = 31
+	#intervalFS = 0
 	#intervalHoM = 11
 	#intervalWC = 11
 	#intervalSC = 11
@@ -1062,6 +1062,7 @@ goto :checkSkillsFinish
 		sleep 10
 		#time = #time + 10
 		goto :endLvlSkill
+
 	elseif #justUnlockSkills == 0
 		goto :maxSkill
 		
@@ -2000,7 +2001,7 @@ goto :pressSkills
 	
 	//equipment stacking
 	if #equipStack == 1
-		if #randomX > 275 and #randomX < 400 and #randomY > 340
+		if #randomX > 300 and #randomX < 420 and #randomY > 280
 			goto :randomTouch
 		endif
 	endif
@@ -2022,7 +2023,7 @@ goto :pressSkills
 		#hero = #hero + 1
 		
 		if #equipmentStacking == 1
-			if #hero == 1 or #hero == 19
+			if #hero == 1 or #hero == 6
 				#hero = #hero + 1
 			endif
 		endif
@@ -2067,7 +2068,19 @@ goto :pressSkills
 		//Kronus
 			touchDown 0 50 375
 			touchUp 0
-		elseif #hero == 11
+		endif
+	endif
+goto :randomTouchB
+
+:randomTouchB
+	if #astralAwakening == 1
+		if #equipmentStacking == 1
+			if #hero == 11 or #hero == 19
+				#hero = #hero + 1
+			endif
+		endif
+
+		if #hero == 11
 		//Cosette
 			touchDown 0 400 400
 			touchUp 0
@@ -2107,7 +2120,19 @@ goto :pressSkills
 		//Great Pharaoh
 			touchDown 0 445 205
 			touchUp 0
-		elseif #hero == 21
+		endif
+	endif
+goto :randomTouchC
+
+:randomTouchC
+	if #astralAwakening == 1
+		if #equipmentStacking == 1
+			if #hero == 22
+				#hero = #hero + 1
+			endif
+		endif
+		
+		if #hero == 21
 		//Boomoh Doctor
 			touchDown 0 50 225
 			touchUp 0
@@ -2147,7 +2172,13 @@ goto :pressSkills
 		//Princess Titania
 			touchDown 0 25 175
 			touchUp 0
-		elseif #hero == 31
+		endif
+	endif
+goto :randomTouchD
+
+:randomTouchD
+	if #astralAwakening == 1
+		if #hero == 31
 		//Miki
 			touchDown 0 425 225
 			touchUp 0
@@ -2219,14 +2250,14 @@ goto :start
 
 	if #agree == 1
 		touchDown 0 300 630
-		sleep 15
+		sleep 40
 		touchUp 0
-		sleep 15
+		sleep 40
 		touchDown 0 300 630
-		sleep 15
+		sleep 40
 		touchUp 0
-		sleep 15
-		#time = #time + 100
+		sleep 40
+		#time = #time + 180
 	endif
 
 	if #decline == 1
@@ -2238,6 +2269,6 @@ goto :start
 		sleep 30
 		touchUp 0
 		sleep 30
-		#time = #time + 100
+		#time = #time + 150
 	endif
 goto :randomTouch
