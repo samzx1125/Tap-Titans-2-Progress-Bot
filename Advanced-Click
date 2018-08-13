@@ -1,10 +1,11 @@
+// August 12, 2018
 // -  Tap Titans 2 AdvancedClickBot by Tune389 [ v1.3 dev 1]
 // edited by djo5296 '17-12-30
-// chrisreyn SC Mana Siphon July 19 2018
+// now fully handled by chrisreyn
 // thanks to tommy8208 for testing
 // code and suggestions from atereshkov, GitGud2018
 SCREEN_SIZE: 480x800
- 
+
 // ---------- Click Areas
 var #enableFairies 1
 var #enablePremiumCollect 1
@@ -39,6 +40,7 @@ var #runActionsEveryXSeconds 94
 // ^esp if you cant level SC in the first run
 // ^so that when runActions runs, SC is done and script can level up SC
 // also note that displayed run time is not very accurate with real time
+// IMPORTANT go to line 249 and edit the settings there
 
 var #runActionsOnStart 1
 // 1 = (default) run actions on script start
@@ -318,7 +320,6 @@ var #resultClanQuest 0
 	rand #prestigeAfterXMinutes #prestigeStartTime #prestigeEndTime
 goto :init
 // ---------- INIT
-
 :init
 	if #enablePremiumCollect == 1
 		if #agree == 1
@@ -601,7 +602,6 @@ if #topHeroes > 0
 	endif
 goto :start
 // ---------- CHECK MANA
-
 :checkMana
 	getColor #color1 208 638
 	if #color1 == #colorWhite
@@ -630,10 +630,19 @@ goto :start
 	#timeLastActionRun = #secondsTotal
 	#actionStepper = #actionStepper + 1
 	
-	if #actionStepper == 2 and #enableSkills == 1 and  #skillsUnlocked < 6
+	//since skills should have been maxed, it wont go to openSwordMasterTab after
+	if #unlocked >= 8 or #maxedOutSkills > 1 and #actionStepper == 1
+		#actionStepper = #actionStepper + 1
+	endif
+	
+	if #justUnlockSkills == 0 and #minutes >= #stopLevelSkillMins and #actionStepper == 1
+		#actionStepper = #actionStepper + 1
+	endif
+	
+	if #actionStepper == 1 and #enableSkills == 1 and #skillsUnlocked < 6
 		#skillsUnlocked = 0
 		goto :openSwordMasterTab
-	elseif #actionStepper == 1 and #enableHeroes == 1
+	elseif #actionStepper == 2 and #enableHeroes == 1
 		goto :levelHeroes
 	elseif #actionStepper == 5 and #enableClanQuest == 1
 		#actionStepper = 0
@@ -853,6 +862,8 @@ goto :start
 	touchUp 0
 	sleep #loadingClanQuestDelay
 	
+	sleep 3000
+	//check titan HP if > 0
 	getColor #color1 420 725
 	//420 730
 	
@@ -944,16 +955,99 @@ goto :clanQuestClose
 
 // ---------- LEVEL SKILLS
 :openSwordMasterTab
-	//open sword master tab
-	sleep #btnDelay
-	touchDown 0 #menuStats #menuY
-	sleep #btnDelay
-	touchUp 0
-	#time = #time + #btnDelay * 2
+	if #count < 2
+		if #lateRun < 1 and #count < 2
+			if #count == 0
+				sleep 100
+				//open sword master tab
+				sleep #btnDelay
+				#time = #time + #btnDelay + 100
+				touchDown 0 #menuStats #menuY
+				sleep #btnDelay
+				#time = #time + #btnDelay
+				touchUp 0
+				sleep 20
+					
+				//wait for menu open
+				sleep #menuSlideDelay
+				#time = #time + #menuSlideDelay
+			endif
+			
+			//slide top
+			touchDown 0 280 650
+			sleep 200
+			touchMove 0 280 600
+			sleep 50
+			touchMove 0 280 700
+			sleep 50
+			touchMove 0 280 750
+			sleep 50
+			touchMove 0 280 780
+			sleep 50
+			touchUp 0
+			sleep 750
 		
-	//wait for slide
-	sleep #menuSlideDelay
-	#time = #time + #menuSlideDelay
+			//slide top
+			touchDown 0 280 650
+			sleep 200
+			touchMove 0 280 600
+			sleep 50
+			touchMove 0 280 700
+			sleep 50
+			touchMove 0 280 750
+			sleep 50
+			touchMove 0 280 780
+			sleep 50
+			touchUp 0
+			sleep 750
+		
+			//slide top
+			touchDown 0 280 650
+			sleep 200
+			touchMove 0 280 600
+			sleep 50
+			touchMove 0 280 700
+			sleep 50
+			touchMove 0 280 750
+			sleep 50
+			touchMove 0 280 780
+			sleep 50
+			touchUp 0
+			sleep 750
+			sleep #btnDelay
+			#time = #time + #btnDelay + 3450
+			
+			touchDown 0 466 580
+			sleep 50
+			touchUp 0
+			sleep 200
+			touchDown 0 466 580
+			sleep 50
+			touchUp 0
+			sleep 200
+			touchDown 0 466 580
+			sleep 50
+			touchUp 0
+			sleep 200
+			#time = #time + 750
+		endif
+		
+		if #lateRun > 0 and #count < 1
+			#time = #time + #minz
+			#seconds = (#time/1000)%60
+			#secondsTotal = #time/1000
+			#minutes = (#time/1000)/60
+			#lateRun = 0
+		endif
+		
+		if #count < 2
+			#count = #count + 1
+		endif
+		
+		if #count < 2
+			goto :openSwordMasterTab
+		endif
+	endif
 	
 	//slide top
 	touchDown 0 280 650
@@ -1116,7 +1210,7 @@ goto :endLvlSkill
 
 :maxHS
 	#loopBreak = #loopBreak + 1
-	if #loopBreak > 15
+	if #loopBreak > 11
 		#loopBreak = 0
 		//slide back
 		touchDown 1 280 650
@@ -1141,12 +1235,6 @@ goto :endLvlSkill
 		touchMove 1 280 780
 		touchUp 1
 		#time = #time + 350 * 2
-		goto :checkSkills
-	endif
-	
-	getColor #skillAvailable 460 691
-	if #skillAvailable >= -7963574 and #skillAvailable <= -7034609
-		#loopBreak = 0
 		goto :checkSkills
 	endif
 	
@@ -1252,109 +1340,7 @@ goto :checkSkills
 goto :closeMenu
 // ---------- LEVEL HEROES
 :levelHeroes
-	if #count < 2
-		if #lateRun < 1 and #count < 2
-			if #count == 0
-				sleep 100
-				//open stats
-				sleep #btnDelay
-				#time = #time + #btnDelay + 100
-				touchDown 0 #menuStats #menuY
-				sleep #btnDelay
-				#time = #time + #btnDelay
-				touchUp 0
-				sleep 20
-					
-				//wait for slide
-				sleep #menuSlideDelay
-				#time = #time + #menuSlideDelay
-			endif
-			
-			//slide top
-			touchDown 0 280 650
-			sleep 200
-			touchMove 0 280 600
-			sleep 50
-			touchMove 0 280 700
-			sleep 50
-			touchMove 0 280 750
-			sleep 50
-			touchMove 0 280 780
-			sleep 50
-			touchUp 0
-			sleep 750
 		
-			//slide top
-			touchDown 0 280 650
-			sleep 200
-			touchMove 0 280 600
-			sleep 50
-			touchMove 0 280 700
-			sleep 50
-			touchMove 0 280 750
-			sleep 50
-			touchMove 0 280 780
-			sleep 50
-			touchUp 0
-			sleep 750
-		
-			//slide top
-			touchDown 0 280 650
-			sleep 200
-			touchMove 0 280 600
-			sleep 50
-			touchMove 0 280 700
-			sleep 50
-			touchMove 0 280 750
-			sleep 50
-			touchMove 0 280 780
-			sleep 50
-			touchUp 0
-			sleep 750
-			sleep #btnDelay
-			#time = #time + #btnDelay + 3450
-			
-			touchDown 0 466 580
-			sleep 50
-			touchUp 0
-			sleep 200
-			touchDown 0 466 580
-			sleep 50
-			touchUp 0
-			sleep 200
-			touchDown 0 466 580
-			sleep 50
-			touchUp 0
-			sleep 200
-			#time = #time + 750
-		endif
-		
-		if #lateRun > 0 and #count < 1
-			#time = #time + #minz
-			#seconds = (#time/1000)%60
-			#secondsTotal = #time/1000
-			#minutes = (#time/1000)/60
-			#lateRun = 0
-		endif
-		
-		if #count < 2
-			#count = #count + 1
-		endif
-		
-		if #count < 2
-			goto :levelHeroes
-		endif
-		
-		//close stats
-		sleep #btnDelay
-		#time = #time + #btnDelay
-		touchPress 0 #menuCloseX #menuCloseY
-		touchPress 0 #menuCloseX #menuCloseY
-		touchPress 0 #menuCloseX #menuCloseY
-		sleep #menuSlideDelay
-		#time = #time + #menuSlideDelay
-	endif
-	
 	//collect gold
 	touchDown 0 30 230
 	sleep 50
@@ -1526,15 +1512,6 @@ goto :scrollTop
 	touchPress 0 460 670
 	sleep #btnDelay
 	#time = #time + #btnDelay * 4
-	
-	//since skills should have been maxed, it wont go to openSwordMasterTab after
-	if #unlocked >= 8 or #maxedOutSkills > 1
-		#actionStepper = #actionStepper + 1
-	endif
-	
-	if #justUnlockSkills == 0 and #minutes >= #stopLevelSkillMins
-		#actionStepper = #actionStepper + 1
-	endif
 	
 	//lvl up only nearby heroes at this time onwards
 	//edit as you see fit
