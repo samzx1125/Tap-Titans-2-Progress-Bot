@@ -29,6 +29,7 @@ https://github.com/chrisreyn/Tap-Titans-2-Progress-Bot/wiki
  - Android 5 Device or Emulator (ONLY MEMU, Bluestacks untested)
    - confirmed working stable version: 5.5.5 (July 12)
  - Resolution 480x800 (you can change it maybe if your device is different)
+ - DPI 128 (stable but not the best)
  - Root, for HiroMacro
 
 - - - - -
